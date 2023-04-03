@@ -3,13 +3,10 @@ package com.fish.chapter3_searching.impl;
 import com.fish.chapter3_searching.api.OST;
 import edu.princeton.cs.algs4.Queue;
 
-import java.util.LinkedList;
-
 /**
- * @author Yuyi-YuShaoyu
- * @Description
- * @create 2023-04-03 17:22
- * @Modified By
+ * 基于二分查找+有序数组的符号表实现
+ * @param <K>
+ * @param <V>
  */
 public class BinarySearchST<K extends Comparable<K>, V> implements OST<K, V> {
 
