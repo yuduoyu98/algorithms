@@ -61,15 +61,36 @@ public class BinarySearchST<K extends Comparable<K>, V> implements OST<K, V> {
 
     @Override
     public K floor(K key) {
+        /**
+         * rank -> 符号表中小于输入key值的key数
+         * floor -> key的定义为小于等于输入key值key
+         *
+         * 分析：
+         *      1. key=keys[n]           keys[0~n-1] < key   rank=n    floor应返回keys[n]
+         *      2. keys[n-1]<key<keys[n] keys[0~n-1] < key   rank=n    floor应返回keys[n-1]
+         *
+         * 处理逻辑：
+         *      rank=n时 如果key=keys[n] 返回keys[n] 否则返回keys[n-1]
+         *      由于rank取值范围为0~N: 当rank为0或者N时 都需要单独讨论 因为可能会发生数组越界
+         */
         int rank = rank(key);
-        if (rank == N){
-
+        if (rank == N) {
+            return keys[N - 1];
+        } else if (rank == 0) {
+            return keys[0].compareTo(key) == 0 ? keys[0] : null;
+        } else {
+            return keys[rank].compareTo(key) == 0 ? keys[rank] : keys[rank - 1];
         }
-        return rank == 0 ? null : keys[rank];
     }
 
     @Override
     public K ceiling(K key) {
+        /**
+         * 分析：
+         *      1. key=keys[n]           keys[0~n-1] < key   rank=n    ceiling应返回keys[n]
+         *      2. keys[n-1]<key<keys[n] keys[0~n-1] < key   rank=n    ceiling应返回keys[n]
+         * 只需要单独讨论rank=N的特殊情况即可
+         */
         int rank = rank(key);
         return rank == N ? null : keys[rank];
     }
@@ -99,7 +120,7 @@ public class BinarySearchST<K extends Comparable<K>, V> implements OST<K, V> {
     @Override
     public boolean contains(K key) {
         int rank = rank(key);
-        return keys[rank - 1].equals(key);
+        return rank < N && keys[rank].equals(key);
     }
 
     @Override
