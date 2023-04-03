@@ -4,7 +4,6 @@ test
 build-target
 *.class
 *.iml
-*.jar
 *.zip
 *.log
 

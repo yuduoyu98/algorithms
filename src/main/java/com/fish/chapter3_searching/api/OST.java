@@ -20,12 +20,12 @@ public interface OST<K extends Comparable<K>, V> extends ST<K , V> {
     K max();
 
     /**
-     * max key lte the input key
+     * 小于等于key的最大键
      */
     K floor(K key);
 
     /**
-     * min key gte the input key
+     * 大于等于等于key的最小键
      */
     K ceiling(K key);
 
@@ -35,7 +35,7 @@ public interface OST<K extends Comparable<K>, V> extends ST<K , V> {
     K select(int r);
 
     /**
-     * 键的排名：小于key的键的数量
+     * 键的排名：小于key的键的数量 (key可以不在符号表中)
      */
     int rank(K key);
 
