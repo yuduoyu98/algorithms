@@ -11,6 +11,9 @@ public interface ST<K, V> {
 
     V get(K key);
 
+    /**
+     * 如果key存在删除该key
+     */
     void delete(K key);
 
     boolean contains(K key);
