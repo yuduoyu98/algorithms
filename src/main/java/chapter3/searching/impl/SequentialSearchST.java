@@ -1,6 +1,6 @@
-package com.fish.chapter3_searching.impl;
+package chapter3.searching.impl;
 
-import com.fish.chapter3_searching.api.ST;
+import chapter3.searching.api.ST;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,13 +1,11 @@
-package com.fish.chapter3_searching;
+package chapter3.searching;
 
-import com.fish.chapter3_searching.impl.BinarySearchST;
-
-import java.util.function.Consumer;
+import chapter3.searching.official_impl.BinarySearchST;
 
 public class TestBinarySearchST {
     public static void main(String[] args) {
-        BinarySearchST<String, Integer> BST1 = new BinarySearchST<>(20);
-        com.fish.chapter3_searching.official_impl.BinarySearchST<String, Integer> BST2 = new com.fish.chapter3_searching.official_impl.BinarySearchST<>();
+        chapter3.searching.impl.BinarySearchST<String, Integer> BST1 = new chapter3.searching.impl.BinarySearchST<>(20);
+        BinarySearchST<String, Integer> BST2 = new BinarySearchST<>();
 
         String[] splits = "S E A R C H E X A M P L E".split(" ");
         System.out.println(splits.length);

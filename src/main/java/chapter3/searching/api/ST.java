@@ -1,4 +1,4 @@
-package com.fish.chapter3_searching.api;
+package chapter3.searching.api;
 
 /**
  * Symbol Table

@@ -1,6 +1,4 @@
-package com.fish.chapter3_searching.api;
-
-import com.fish.chapter3_searching.api.ST;
+package chapter3.searching.api;
 
 /**
  * Ordered Symbol Table

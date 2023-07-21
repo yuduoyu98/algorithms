@@ -1,6 +1,6 @@
-package com.fish.chapter3_searching.impl;
+package chapter3.searching.impl;
 
-import com.fish.chapter3_searching.api.OST;
+import chapter3.searching.api.OST;
 import edu.princeton.cs.algs4.Queue;
 
 /**

@@ -1,6 +1,6 @@
-package com.fish.chapter3_searching;
+package chapter3.searching;
 
-import com.fish.chapter3_searching.impl.SequentialSearchST;
+import chapter3.searching.impl.SequentialSearchST;
 import org.junit.Test;
 
 /**

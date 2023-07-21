@@ -1,4 +1,4 @@
-package com.fish.chapter3_searching.official_impl;
+package chapter3.searching.official_impl;
 
 /******************************************************************************
  *  Compilation:  javac ST.java
