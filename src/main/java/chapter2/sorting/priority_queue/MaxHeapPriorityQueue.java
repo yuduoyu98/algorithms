@@ -10,19 +10,21 @@ public class MaxHeapPriorityQueue<T extends Comparable<T>> extends AbstractMaxPr
     public static final int DEFAULT_INIT_SIZE = 10;
     public static final int HEAD_ELEMENT_OFFSET = 1;    //表示完全二叉树数组的第一个元素不使用
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "unused"})
     public MaxHeapPriorityQueue() {
         this.pq = (T[]) new Comparable[DEFAULT_INIT_SIZE + HEAD_ELEMENT_OFFSET];
         this.N = 0;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "unused"})
     public MaxHeapPriorityQueue(int capacity) {
         this.pq = (T[]) new Comparable[capacity + HEAD_ELEMENT_OFFSET];
         this.N = 0;
     }
 
+    @SuppressWarnings("unchecked")
     public MaxHeapPriorityQueue(T[] arr) {
+        pq = (T[]) new Comparable[arr.length + HEAD_ELEMENT_OFFSET];
         for (T t : arr) {
             insert(t);
         }
