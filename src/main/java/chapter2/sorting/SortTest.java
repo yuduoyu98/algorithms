@@ -1,32 +1,21 @@
 package chapter2.sorting;
 
-import edu.princeton.cs.algs4.In;
+import chapter2.sorting.impl.HeapSort;
+import chapter2.sorting.impl.SelectionSort;
 import edu.princeton.cs.algs4.StdRandom;
 import org.junit.Test;
 
-import java.net.Socket;
-
 public class SortTest {
 
-    public static final Integer[] arr = new Integer[]{5, 2, 3, 4, 1};
-
-    public static Integer[] generateIntegerArr(int size, int bound){
-        if(bound <= size){
-            throw new IllegalArgumentException("随机数生成上界应大于随机数组元素个数");
+    public static Integer[] generateIntegerArr(int size, int bound) {
+        if (bound < size) {
+            throw new IllegalArgumentException("随机数生成上界应不小于随机数组元素个数");
         }
         Integer[] arr = new Integer[size];
         for (int i = 0; i < size; i++) {
             arr[i] = StdRandom.uniformInt(bound);
         }
         return arr;
-    }
-
-    public static void test(SortTemplate<String> sortImpl, Socket socket) {
-        In in = new In(socket);
-        String[] arr = in.readAllStrings();
-        sortImpl.sort(arr);
-        assert sortImpl.isSorted(arr);
-        sortImpl.print(arr);
     }
 
     public static void test(SortTemplate<Integer> sortImpl, Integer[] arr) {
@@ -38,7 +27,17 @@ public class SortTest {
 
     @Test
     public void selectionSortTest() {
+        System.out.println("------------------------ 选择排序测试 ------------------------");
         SelectionSort<Integer> sortAlg = new SelectionSort<>();
+        test(sortAlg, generateIntegerArr(1, 100));
+        test(sortAlg, generateIntegerArr(50, 100));
+    }
+
+    @Test
+    public void heapSortTest() {
+        System.out.println("------------------------ 堆排序测试 ------------------------");
+        HeapSort<Integer> sortAlg = new HeapSort<>();
+        test(sortAlg, generateIntegerArr(1, 100));
         test(sortAlg, generateIntegerArr(50, 100));
     }
 

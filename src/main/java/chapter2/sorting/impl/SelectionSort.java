@@ -1,4 +1,6 @@
-package chapter2.sorting;
+package chapter2.sorting.impl;
+
+import chapter2.sorting.SortTemplate;
 
 /**
  * <h2>选择排序</h2>
