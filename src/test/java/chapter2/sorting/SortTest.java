@@ -21,7 +21,7 @@ public class SortTest {
     public static void test(SortTemplate<Integer> sortImpl, Integer[] arr) {
         sortImpl.print(arr, "排序前");
         sortImpl.sort(arr);
-        sortImpl.print(arr, "排序后");
+        sortImpl.print(arr, "排序");
         assert sortImpl.isSorted(arr) : "排序结果错误";
     }
 
