@@ -1,5 +1,8 @@
 package chapter4.graphs.api;
 
+/**
+ * 无向图API
+ */
 public interface Graph {
 
     /**
