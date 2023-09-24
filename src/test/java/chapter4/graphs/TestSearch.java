@@ -14,15 +14,15 @@ public class TestSearch {
 
     @Before
     public void init(){
-        G = new Graph();
+//        G = new Graph();
     }
 
     @Test
     public void test(){
         int s = 0;
-        Search search = new Search(G, s);
-        for (int v = 0; v < G.V(); v++) {
-            if(search.marked())
-        }
+//        Search search = new Search(G, s);
+//        for (int v = 0; v < G.V(); v++) {
+//            if(search.marked())
+//        }
     }
 }
