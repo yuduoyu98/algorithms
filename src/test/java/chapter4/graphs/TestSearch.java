@@ -2,8 +2,7 @@ package chapter4.graphs;
 
 import chapter4.graphs.api.Graph;
 import chapter4.graphs.api.Search;
-import chapter4.graphs.impl.AdjListUGraph;
-import chapter4.graphs.impl.QuickUnionSearch;
+import chapter4.graphs.impl.*;
 import common.DataSize;
 import common.TestData;
 import edu.princeton.cs.algs4.In;
@@ -24,13 +23,20 @@ public class TestSearch {
 
     @Test
     public void test() {
-        //0 1 2 3 4 5 6 非连通图
-//        testEntry(0, QuickUnionSearch.class, true);
-        //9 10 11 12 非连通图
-        testEntry(9, QuickUnionSearch.class, true);
+        basicImplTest(QuickUnionSearch.class);
+        basicImplTest(DepthFirstSearch.class);
     }
 
-    public <S extends Search> void testEntry(int start, Class<S> searchClass, boolean useLocal) {
+    private <S extends Search> void basicImplTest(Class<S> searchClass) {
+        StdOut.println("Test Class: " + searchClass.getSimpleName());
+        //0 1 2 3 4 5 6 非连通图
+        testEntry(0, searchClass, true);
+        //9 10 11 12 非连通图
+        testEntry(9, searchClass, true);
+        StdOut.println();
+    }
+
+    private <S extends Search> void testEntry(int start, Class<S> searchClass, boolean useLocal) {
         In in = testData.getIn(DataSize.TINY, useLocal);
         Graph G = new AdjListUGraph(in);
         Search searchImpl;
