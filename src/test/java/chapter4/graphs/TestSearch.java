@@ -2,7 +2,12 @@ package chapter4.graphs;
 
 import chapter4.graphs.api.Graph;
 import chapter4.graphs.api.Search;
-import org.junit.Before;
+import chapter4.graphs.impl.AdjListUGraph;
+import chapter4.graphs.impl.QuickUnionSearch;
+import common.DataSize;
+import common.TestData;
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdOut;
 import org.junit.Test;
 
 /**
@@ -10,19 +15,42 @@ import org.junit.Test;
  */
 public class TestSearch {
 
-    private Graph G;
-
-    @Before
-    public void init(){
-//        G = new Graph();
-    }
+    private TestData testData = new TestData(
+            "https://algs4.cs.princeton.edu/41graph/",
+            "src/test/java/chapter4/graphs/data/",
+            "tinyG.txt",
+            "mediumG.txt",
+            "largeG.txt");
 
     @Test
-    public void test(){
-        int s = 0;
-//        Search search = new Search(G, s);
-//        for (int v = 0; v < G.V(); v++) {
-//            if(search.marked())
-//        }
+    public void test() {
+        //0 1 2 3 4 5 6 非连通图
+//        testEntry(0, QuickUnionSearch.class, true);
+        //9 10 11 12 非连通图
+        testEntry(9, QuickUnionSearch.class, true);
+    }
+
+    public <S extends Search> void testEntry(int start, Class<S> searchClass, boolean useLocal) {
+        In in = testData.getIn(DataSize.TINY, useLocal);
+        Graph G = new AdjListUGraph(in);
+        Search searchImpl;
+        try {
+            searchImpl = searchClass.getDeclaredConstructor(Graph.class, int.class).newInstance(G, start);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        for (int v = 0; v < G.V(); v++) {
+            //与起点相连的顶点
+            if (searchImpl.marked(v)) {
+                StdOut.print(v + " ");
+            }
+        }
+        StdOut.println();
+        //是否为连通图
+        if (searchImpl.count() != G.V()) {
+            StdOut.print("非");
+        }
+        StdOut.println("连通图");
     }
 }

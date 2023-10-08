@@ -6,17 +6,23 @@ import java.util.Arrays;
 /**
  * Union Found 并查集 实现（quick-union思路的基础上进行优化）
  * set数组和之前含义不同：下标 <=> 触点, 下标对应的值 <=> 触点相连的触点（可以是自己） 下标对应的值=下标 => 根触点
- * quick-union算法的复杂度取决于树高，优化点便在于降低树高 -> 两个数归并永远希望是小树接到大树上 -> 需要知道每颗树的树高
+ * union时永远希望小数挂在大树上（树的节点数大小）
  */
-public class WeightedQuickUnionUF extends AbstractUnionFound {
+public class WeightQuickUnionUF extends AbstractUnionFound {
 
-    //记录树高（只对树的头节点有意义）
-    private int[] ht;
+    //记录树的节点数 连通分量定点数（只对树的头节点有意义）
+    private int[] wt;
 
-    public WeightedQuickUnionUF(int N) {
+    public WeightQuickUnionUF(int N) {
         super(N);
-        ht = new int[N];
-        Arrays.fill(ht, 1);
+        wt = new int[N];
+        Arrays.fill(wt, 1);
+    }
+
+    //获取某一顶点相连通的顶点数 树的节点数
+    //为方便Search API的实现类QuickUnionSearch#count的实现拓展的api
+    public int connectedVertices(int p) {
+        return wt[find(p)];
     }
 
     @Override
@@ -24,14 +30,12 @@ public class WeightedQuickUnionUF extends AbstractUnionFound {
         int pId = find(p);
         int qId = find(q);
         if (pId == qId) return;
-        if (ht[pId] < ht[qId]) {
+        if (wt[pId] < wt[qId]) {
             set[pId] = qId;
+            wt[qId] += wt[pId];
         } else {
             set[qId] = pId;
-            if (ht[pId] == ht[qId]) {
-                //两颗子树相等时 归并两棵树会增加树高
-                ht[pId] = ht[pId] + 1;
-            }
+            wt[pId] += wt[qId];
         }
         count--;
     }

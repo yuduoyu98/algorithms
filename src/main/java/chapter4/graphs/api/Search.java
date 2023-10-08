@@ -5,22 +5,27 @@ package chapter4.graphs.api;
  */
 public abstract class Search {
 
+    public Graph graph;
+
+    public int start;
+
     /**
      * 初始化
      * @param G 图
      * @param s 起点
      */
     public Search(Graph G, int s){
-
+        this.graph = G;
+        this.start = s;
     }
 
     /**
      * 顶点v和s是否连通
      */
-    abstract boolean marked(int v);
+    public abstract boolean marked(int v);
 
     /**
      * 与s连通的顶点总数
      */
-    abstract int count();
+    public abstract int count();
 }

@@ -5,12 +5,12 @@ import java.util.Arrays;
 /**
  * 在加权quick-union算法的基础上 考虑在执行find的时候将路径进行"压缩": 所有触点指向根节点
  */
-public class PathCompressedWeightedQuickUnionUF extends AbstractUnionFound {
+public class PathCompressedHeightQuickUnionUF extends AbstractUnionFound {
 
     //记录树高（只对树的头节点有意义）
     private int[] ht;
 
-    public PathCompressedWeightedQuickUnionUF(int N) {
+    public PathCompressedHeightQuickUnionUF(int N) {
         super(N);
         ht = new int[N];
         Arrays.fill(ht, 1);
