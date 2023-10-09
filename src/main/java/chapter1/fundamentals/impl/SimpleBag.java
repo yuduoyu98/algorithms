@@ -42,13 +42,13 @@ public class SimpleBag<Item> implements Bag<Item> {
     }
 
     public Iterator<Item> iterator()  {
-        return new LinkedIterator(first);
+        return new LinkedLiskIterator(first);
     }
 
-    private class LinkedIterator implements Iterator<Item> {
+    private class LinkedLiskIterator implements Iterator<Item> {
         private Node<Item> current;
 
-        public LinkedIterator(Node<Item> first) {
+        public LinkedLiskIterator(Node<Item> first) {
             current = first;
         }
 
