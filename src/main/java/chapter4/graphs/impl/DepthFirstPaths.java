@@ -4,8 +4,6 @@ import chapter1.fundamentals.impl.SimpleStack;
 import chapter4.graphs.api.Graph;
 import chapter4.graphs.api.Paths;
 
-import java.util.Arrays;
-
 /**
  * 基于DFS实现的Paths API
  * (quick-union在路径寻找上就无能力为力了)
@@ -20,12 +18,10 @@ public class DepthFirstPaths extends Paths {
 
     public DepthFirstPaths(Graph G, int s) {
         super(G, s);
-        marked = new boolean[G.V()];
-        edgeTo = new int[G.V()];
         //默认位false
-//        Arrays.fill(marked, false);
+        marked = new boolean[G.V()];
         //默认为0
-        Arrays.fill(edgeTo, -1);
+        edgeTo = new int[G.V()];
         dfs(start);
     }
 

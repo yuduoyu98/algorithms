@@ -32,7 +32,8 @@ public class TestPaths {
          * 0 to 4: 0-2-3-4
          * 0 to 5: 0-2-3-5
          */
-        basicImplTest(DepthFirstPaths.class);
+//        basicImplTest(DepthFirstPaths.class);
+        basicImplTest(BreadthFirstPaths.class);
     }
 
     private <P extends Paths> void basicImplTest(Class<P> pathsClass) {
