@@ -1,33 +1,32 @@
 package chapter1.fundamentals;
 
 import chapter1.fundamentals.api.UnionFound;
-import chapter1.fundamentals.impl.PathCompressedWeightedQuickUnionUF;
-import chapter1.fundamentals.impl.QuickFindUF;
-import chapter1.fundamentals.impl.QuickUnionUF;
-import chapter1.fundamentals.impl.WeightedQuickUnionUF;
+import chapter1.fundamentals.impl.*;
+import common.DataSize;
+import common.TestData;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 import org.junit.Test;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+
+import static common.DataSize.*;
 
 /**
  * 并查集测试
  */
 public class TestUnionFound {
 
-    private static final String DATA_PARENT_PATH = "src/test/java/chapter1/fundamentals/data/";
-    private static final String DATA_BASE_URL = "https://algs4.cs.princeton.edu/15uf/";
+    private TestData testData = new TestData(
+            "https://algs4.cs.princeton.edu/15uf/",
+            "src/test/java/chapter1/fundamentals/data/",
+            "tinyUF.txt",
+            "mediumUF.txt",
+            "largeUF.txt");
 
-    private static final String TINY = "tinyUF.txt";
-    private static final String MEDIUM = "mediumUF.txt";
-    private static final String LARGE = "largeUF.txt";
 
-    private static final Map<String, Integer> resMap;
+    private static final Map<DataSize, Integer> resMap;
 
     static {
         resMap = new HashMap<>();
@@ -50,26 +49,15 @@ public class TestUnionFound {
         //比quick-find还慢
 //        testEntry(LARGE, QuickUnionUF.class, false);
         //13 sec 左右
-//        testEntry(LARGE, WeightedQuickUnionUF.class, false);
+        testEntry(LARGE, HeightQuickUnionUF.class, false);
+//        testEntry(LARGE, WeightQuickUnionUF.class, false);
         //在这个场景下也没快
-        testEntry(LARGE, PathCompressedWeightedQuickUnionUF.class, false);
+//        testEntry(LARGE, PathCompressedHeightQuickUnionUF.class, false);
     }
 
-    private <T extends UnionFound> void testEntry(String dataFile, Class<T> testClazz, boolean useLocal) {
-        In in;
-        if (useLocal) {
-            File file = new File(DATA_PARENT_PATH + dataFile);
-            in = new In(file);
-        } else {
-            try {
-                URL url = new URL(DATA_BASE_URL + dataFile);
-                in = new In(url);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-                throw new RuntimeException();
-            }
-        }
-        UnionFound uf = UFInit(testClazz, in);
+    private <T extends UnionFound> void testEntry(DataSize dataFile, Class<T> testClazz, boolean useLocal) {
+
+        UnionFound uf = UFInit(testClazz, testData.getIn(dataFile, useLocal));
         assert uf.count() == resMap.get(dataFile);
     }
 

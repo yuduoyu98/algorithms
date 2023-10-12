@@ -8,7 +8,7 @@ import edu.princeton.cs.algs4.In;
  * 无向图的邻接表实现
  * 对于稀疏图性能表现好
  */
-public abstract class AdjListUGraph implements UndirectedGraph {
+public class AdjListUGraph implements UndirectedGraph {
 
     private final int V;
     private int E;
