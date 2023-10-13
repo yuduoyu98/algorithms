@@ -7,6 +7,7 @@ package chapter4.graphs.api;
 public abstract class TopoLogical {
 
     protected DirectedGraph graph;
+    protected Iterable<Integer> cycle;
 
     public TopoLogical(DirectedGraph G){
         graph = G;
