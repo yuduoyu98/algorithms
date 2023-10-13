@@ -2,9 +2,7 @@ package chapter4.graphs;
 
 import chapter4.graphs.api.DirectedGraph;
 import chapter4.graphs.api.UndirectedGraph;
-import chapter4.graphs.impl.AdjListDGraph;
-import chapter4.graphs.impl.AdjListUGraph;
-import chapter4.graphs.impl.CycleDetect;
+import chapter4.graphs.impl.*;
 import common.DataSize;
 import common.TestData;
 import edu.princeton.cs.algs4.StdOut;
@@ -60,10 +58,21 @@ public class TestCycleDetect {
     @Test
     public void UGCycleTest() {
         StdOut.println("------------- 无向图成环检测 -------------");
-        boolean cycleResult = new CycleDetect(cycleUG).hasCycle();
+        boolean cycleResult = new UndirectedCycleDetect(cycleUG).hasCycle();
         assert cycleResult : "有环图误测为无环图";
         StdOut.println("有环图检测通过");
-        boolean noCycleResult = new CycleDetect(noCycleUG).hasCycle();
+        boolean noCycleResult = new UndirectedCycleDetect(noCycleUG).hasCycle();
+        assert !noCycleResult : "无环图误测为有环图";
+        StdOut.println("无环图检测通过");
+    }
+
+    @Test
+    public void UnionFindUGCycleTest() {
+        StdOut.println("------------- 无向图成环检测（并查集实现） -------------");
+        boolean cycleResult = new UnionFindUndirectedCycleDetect(cycleUG).hasCycle();
+        assert cycleResult : "有环图误测为无环图";
+        StdOut.println("有环图检测通过");
+        boolean noCycleResult = new UnionFindUndirectedCycleDetect(noCycleUG).hasCycle();
         assert !noCycleResult : "无环图误测为有环图";
         StdOut.println("无环图检测通过");
     }
@@ -71,7 +80,7 @@ public class TestCycleDetect {
     @Test
     public void DGCycleTest() {
         StdOut.println("------------- 有向图成环检测 -------------");
-        CycleDetect cycleDetect = new CycleDetect(cycleDG);
+        DirectedCycleDetect cycleDetect = new DirectedCycleDetect(cycleDG);
         boolean cycleResult = cycleDetect.hasCycle();
         assert cycleResult : "有环图误测为无环图";
         StdOut.println("有环图检测通过");
@@ -81,14 +90,30 @@ public class TestCycleDetect {
         }
         StdOut.println();
 
-        CycleDetect cycleDetect2 = new CycleDetect(cycleDG2);
-        boolean cycleResult2 = cycleDetect.hasCycle();
-        assert cycleResult2 : "有环图误测为无环图";
+        DirectedCycleDetect cycleDetect2 = new DirectedCycleDetect(cycleDG2);
+        boolean cycleResult2 = cycleDetect2.hasCycle();
+        assert !cycleResult2 : "无环图误测为有环图";
+        StdOut.println("无环图检测通过");
+        StdOut.println();
+    }
+
+    @Test
+    public void DG1CycleTest() {
+        StdOut.println("------------- 有向图成环检测 -------------");
+        DirectedCycleDetect1 cycleDetect = new DirectedCycleDetect1(cycleDG);
+        boolean cycleResult = cycleDetect.hasCycle();
+        assert cycleResult : "有环图误测为无环图";
         StdOut.println("有环图检测通过");
         StdOut.print("环路：");
-        for (int v : cycleDetect2.cycle()) {
+        for (int v : cycleDetect.cycle()) {
             StdOut.print(v + " ");
         }
+        StdOut.println();
+
+        DirectedCycleDetect1 cycleDetect2 = new DirectedCycleDetect1(cycleDG2);
+        boolean cycleResult2 = cycleDetect2.hasCycle();
+        assert !cycleResult2 : "无环图误测为有环图";
+        StdOut.println("无环图检测通过");
         StdOut.println();
     }
 }
