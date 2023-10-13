@@ -6,6 +6,7 @@ import chapter4.graphs.api.Paths;
 
 /**
  * 基于DFS实现的Paths API
+ * 有向图和无向图均适用
  * (quick-union在路径寻找上就无能力为力了)
  */
 public class DepthFirstPaths extends Paths {
