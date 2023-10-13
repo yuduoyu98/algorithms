@@ -1,27 +1,28 @@
 package chapter4.graphs.api;
 
 import chapter1.fundamentals.api.Bag;
-import chapter4.graphs.impl.AdjListUGraph;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.ST;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
  * 符号图
  */
-public abstract class SymbolGraph {
+public abstract class SymbolGraph<G extends Graph> {
 
-    private Graph G;
+    private G graph;
 
     //顶点名 -> 索引
-    public ST<String, Integer> st;
+    protected ST<String, Integer> st;
 
     //索引 -> 顶点名
-    public String[] keys;
+    protected String[] keys;
 
     /**
      * 读入文件构造图
@@ -40,15 +41,36 @@ public abstract class SymbolGraph {
             keys[st.get(name)] = name;
         }
         //第二遍：构造图
-        G = new AdjListUGraph(st.size());
+        graph = graphReflector(st.size());
         for (Pair<Integer, Integer> edge : edges) {
-            G.addEdge(edge.getLeft(), edge.getRight());
+            this.graph.addEdge(edge.getLeft(), edge.getRight());
         }
     }
 
     /**
+     * 根据泛型反射生成图对象
+     *
+     * @param size 图的定点数
+     * @return G
+     */
+    @SuppressWarnings("unchecked")
+    private G graphReflector(int size) {
+        Class<G> graphClass =
+                (Class<G>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        G graph;
+        try {
+            graph = graphClass.getConstructor(int.class).newInstance(size);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+        return graph;
+    }
+
+    /**
      * 解析输入 生成顶点索引符号表ST 返回索引化的边信息
-     * @param in 输入流
+     *
+     * @param in    输入流
      * @param delim 分隔符
      * @return 顶点转换为id的边信息
      */
@@ -93,7 +115,7 @@ public abstract class SymbolGraph {
     /**
      * Graph对象
      */
-    public Graph G() {
-        return G;
+    public G G() {
+        return graph;
     }
 }

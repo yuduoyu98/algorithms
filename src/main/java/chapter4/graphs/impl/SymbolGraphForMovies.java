@@ -11,7 +11,7 @@ import org.apache.commons.lang3.tuple.Pair;
 /**
  *
  */
-public class SymbolGraphForMovies extends SymbolGraph {
+public class SymbolGraphForMovies extends SymbolGraph<AdjListUGraph> {
 
     /**
      * 读入文件构造图

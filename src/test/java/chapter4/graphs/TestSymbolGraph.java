@@ -2,6 +2,7 @@ package chapter4.graphs;
 
 import chapter4.graphs.api.Graph;
 import chapter4.graphs.api.SymbolGraph;
+import chapter4.graphs.impl.AdjListUGraph;
 import chapter4.graphs.impl.SymbolGraphForMovies;
 import chapter4.graphs.impl.SymbolGraphForRoutes;
 import edu.princeton.cs.algs4.StdOut;
@@ -16,16 +17,17 @@ public class TestSymbolGraph {
     /**
      * 测试结果：
      * JFK
-     * MCO
-     * ATL
-     * ORD
+     *  MCO
+     *  ATL
+     *  ORD
      * LAX
-     * PHX
-     * LAS
+     *  PHX
+     *  LAS
      */
     @Test
     public void routesTest() {
-        SymbolGraph sg = new SymbolGraphForRoutes("src\\test\\java\\chapter4\\graphs\\data\\routes.txt", true);
+        SymbolGraph<AdjListUGraph> sg = new SymbolGraphForRoutes("src\\test\\java\\chapter4\\graphs\\data\\routes.txt",
+                true);
         Graph G = sg.G();
         String v1 = "JFK";
         StdOut.println(v1);
@@ -41,7 +43,7 @@ public class TestSymbolGraph {
 
     @Test
     public void movieTest() {
-        SymbolGraph sg = new SymbolGraphForMovies("https://algs4.cs.princeton.edu/41graph/movies.txt");
+        SymbolGraph<AdjListUGraph> sg = new SymbolGraphForMovies("https://algs4.cs.princeton.edu/41graph/movies.txt");
         Graph G = sg.G();
         String celebrity = "Bacon, Kevin";
         StdOut.println("演员 " + celebrity + " 饰演的电影：");
