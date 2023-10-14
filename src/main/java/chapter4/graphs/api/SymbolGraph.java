@@ -29,6 +29,7 @@ public abstract class SymbolGraph<G extends Graph> {
      *
      * @param filePath 文件名
      * @param delim    顶点名分隔符
+     * @param useLocal 是否使用本地文件
      */
     public SymbolGraph(String filePath, String delim, boolean useLocal) {
         In in = getIn(filePath, useLocal);
