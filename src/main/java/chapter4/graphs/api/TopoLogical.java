@@ -7,13 +7,17 @@ package chapter4.graphs.api;
 public abstract class TopoLogical {
 
     protected DirectedGraph graph;
-    protected Iterable<Integer> cycle;
+    protected Iterable<Integer> topoOrder;
 
     public TopoLogical(DirectedGraph G){
         graph = G;
     }
 
-    public abstract boolean isDAG();
+    public boolean isDAG(){
+        return topoOrder != null;
+    }
 
-    public abstract Iterable<Integer> order();
+    public Iterable<Integer> order(){
+        return topoOrder;
+    }
 }

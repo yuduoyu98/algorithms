@@ -18,18 +18,8 @@ public class DFSTopoLogical extends TopoLogical {
         DirectedCycleDetect cycleFinder = new DirectedCycleDetect(G);
         if (!cycleFinder.hasCycle()) {
             DepthFirstOrder order = new DepthFirstOrder(G);
-            cycle = order.reversePost();
+            this.topoOrder = order.reversePost();
         }
-    }
-
-    @Override
-    public boolean isDAG() {
-        return cycle != null;
-    }
-
-    @Override
-    public Iterable<Integer> order() {
-        return cycle;
     }
 
 }

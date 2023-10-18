@@ -5,6 +5,7 @@ import chapter4.graphs.api.SymbolGraph;
 import chapter4.graphs.api.TopoLogical;
 import chapter4.graphs.impl.AdjListDGraph;
 import chapter4.graphs.impl.DFSTopoLogical;
+import chapter4.graphs.impl.KahnTopological;
 import chapter4.graphs.impl.SymbolGraphForJobs;
 import edu.princeton.cs.algs4.StdOut;
 import org.junit.Before;
@@ -27,9 +28,11 @@ public class TestTopological {
     @Test
     public void test() {
         testByImpl(DFSTopoLogical.class);
+        testByImpl(KahnTopological.class);
     }
 
     private <T extends TopoLogical> void testByImpl(Class<T> impl) {
+        StdOut.println("测试实现类： " + impl);
         TopoLogical topo;
         try {
             topo = impl.getConstructor(DirectedGraph.class).newInstance(sg.G());
