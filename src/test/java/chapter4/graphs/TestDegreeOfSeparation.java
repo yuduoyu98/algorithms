@@ -1,9 +1,7 @@
 package chapter4.graphs;
 
 import chapter4.graphs.api.SymbolGraph;
-import chapter4.graphs.impl.DegreeOfSeparation;
-import chapter4.graphs.impl.SymbolGraphForMovies;
-import chapter4.graphs.impl.SymbolGraphForRoutes;
+import chapter4.graphs.impl.*;
 import edu.princeton.cs.algs4.StdOut;
 import org.junit.Test;
 
@@ -14,7 +12,7 @@ public class TestDegreeOfSeparation {
 
     @Test
     public void movieTest() {
-        SymbolGraph sg = new SymbolGraphForMovies("https://algs4.cs.princeton.edu/41graph/movies.txt");
+        SymbolGraph<AdjListUGraph> sg = new SymbolGraphForMovies("https://algs4.cs.princeton.edu/41graph/movies.txt");
         String start = "Bacon, Kevin";
         DegreeOfSeparation dos = new DegreeOfSeparation(sg, start);
         String celeb1 = "Kidman, Nicole";
@@ -27,7 +25,8 @@ public class TestDegreeOfSeparation {
 
     @Test
     public void routeTest() {
-        SymbolGraph sg = new SymbolGraphForRoutes("src\\test\\java\\chapter4\\graphs\\data\\routes.txt", true);
+        SymbolGraph<AdjListUGraph> sg = new SymbolGraphForRoutes("src\\test\\java\\chapter4\\graphs\\data\\routes" +
+                ".txt", true);
         String start = "JFK";
         DegreeOfSeparation dos = new DegreeOfSeparation(sg, start);
         String end1 = "LAS";

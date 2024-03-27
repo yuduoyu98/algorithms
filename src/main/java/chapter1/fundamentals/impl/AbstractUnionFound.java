@@ -7,8 +7,8 @@ import chapter1.fundamentals.api.UnionFound;
  */
 public abstract class AbstractUnionFound implements UnionFound {
 
-    int[] set;
-    int count;
+    protected int[] set;
+    protected int count;
 
     public AbstractUnionFound(int N) {
         set = new int[N];

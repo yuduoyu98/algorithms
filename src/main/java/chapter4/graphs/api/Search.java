@@ -5,9 +5,9 @@ package chapter4.graphs.api;
  */
 public abstract class Search {
 
-    public Graph graph;
+    protected Graph graph;
 
-    public int start;
+    protected int start;
 
     /**
      * 初始化

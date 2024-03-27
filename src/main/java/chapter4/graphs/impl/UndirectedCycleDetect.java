@@ -3,15 +3,15 @@ package chapter4.graphs.impl;
 import chapter4.graphs.api.Graph;
 
 /**
- * 基于DFS实现 成环检测
+ * 基于DFS实现 无向图成环检测
  */
-public class CycleDetect {
+public class UndirectedCycleDetect {
 
     private Graph graph;
     private boolean[] marked;
     private boolean hasCycle = false;
 
-    public CycleDetect(Graph G) {
+    public UndirectedCycleDetect(Graph G) {
         this.graph = G;
         this.marked = new boolean[G.V()];
         for (int v = 0; v < G.V(); v++) {
@@ -25,6 +25,7 @@ public class CycleDetect {
 
     /**
      * DFS成环检测： 在DFS过程中 遇到已经被标记遍历过的节点（非上一个节点） => 成环
+     * 与有向图不同 A - B - A 是不算成环的
      */
     private boolean dfsCycleDetect(int v, int lastV) {
         marked[v] = true;

@@ -10,7 +10,7 @@ import org.apache.commons.lang3.tuple.Pair;
 /**
  *
  */
-public class SymbolGraphForRoutes extends SymbolGraph {
+public class SymbolGraphForRoutes extends SymbolGraph<AdjListUGraph> {
 
     /**
      * 读入文件构造图

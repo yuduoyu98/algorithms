@@ -7,9 +7,9 @@ package chapter4.graphs.api;
  */
 public abstract class Paths {
 
-    public Graph graph;
+    protected Graph graph;
 
-    public int start;
+    protected int start;
 
     public Paths(Graph G, int s) {
         graph = G;
