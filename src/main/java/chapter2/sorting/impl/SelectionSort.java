@@ -3,12 +3,13 @@ package chapter2.sorting.impl;
 import chapter2.sorting.SortTemplate;
 
 /**
- * <h2>选择排序</h2>
- * <strong>基本思想</strong>：依次找到最小元素与指定位置元素进行交换
- * <strong>特点</strong>:
+ * <h2>Selection Sort</h2>
+ * <strong>idea</strong> <p> Find the smallest item and swap with the first item of the array that needs to be sorted..
+ * .<p>
+ * <strong>traits</strong>
  * <ol>
- *     <li> 运行时间和输入无关：比较次数和交换次数固定
- *     <li> 数据移动是最少的
+ *     <li> Running time is insensitive to input
+ *     <li> Data movement is minimal
  * </ol>
  */
 public class SelectionSort<T extends Comparable<T>> implements SortTemplate<T> {

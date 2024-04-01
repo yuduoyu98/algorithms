@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class SortTest {
 
-    public static Integer[] generateIntegerArr(int size, int bound) {
+    private static Integer[] generateIntegerArr(int size, int bound) {
         if (bound < size) {
             throw new IllegalArgumentException("随机数生成上界应不小于随机数组元素个数");
         }
@@ -18,27 +18,32 @@ public class SortTest {
         return arr;
     }
 
-    public static void test(SortTemplate<Integer> sortImpl, Integer[] arr) {
+    private static void test(SortTemplate<Integer> sortImpl, Integer[] arr) {
         sortImpl.print(arr, "排序前");
         sortImpl.sort(arr);
         sortImpl.print(arr, "排序后");
         assert sortImpl.isSorted(arr) : "排序结果错误";
     }
 
+    private static void basicTests(SortTemplate<Integer> sortAlg){
+        //corner case
+        test(sortAlg, generateIntegerArr(1, 100));
+        //regular case
+        test(sortAlg, generateIntegerArr(50, 100));
+    }
+
     @Test
     public void selectionSortTest() {
         System.out.println("------------------------ 选择排序测试 ------------------------");
         SelectionSort<Integer> sortAlg = new SelectionSort<>();
-        test(sortAlg, generateIntegerArr(1, 100));
-        test(sortAlg, generateIntegerArr(50, 100));
+        basicTests(sortAlg);
     }
 
     @Test
     public void heapSortTest() {
         System.out.println("------------------------ 堆排序测试 ------------------------");
         HeapSort<Integer> sortAlg = new HeapSort<>();
-        test(sortAlg, generateIntegerArr(1, 100));
-        test(sortAlg, generateIntegerArr(50, 100));
+        basicTests(sortAlg);
     }
 
 }
