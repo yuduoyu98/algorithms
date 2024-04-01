@@ -4,8 +4,7 @@ import chapter2.sorting.SortTemplate;
 
 /**
  * <h2>Selection Sort</h2>
- * <strong>idea</strong> <p> Find the smallest item and swap with the first item of the array that needs to be sorted..
- * .<p>
+ * <strong>idea</strong> <p> Find the smallest item and swap with the first item of the array that needs to be sorted...</p>
  * <strong>traits</strong>
  * <ol>
  *     <li> Running time is insensitive to input

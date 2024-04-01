@@ -1,6 +1,7 @@
 package chapter2.sorting;
 
 import chapter2.sorting.impl.HeapSort;
+import chapter2.sorting.impl.InsertionSort;
 import chapter2.sorting.impl.SelectionSort;
 import edu.princeton.cs.algs4.StdRandom;
 import org.junit.Test;
@@ -28,6 +29,8 @@ public class SortTest {
     private static void basicTests(SortTemplate<Integer> sortAlg){
         //corner case
         test(sortAlg, generateIntegerArr(1, 100));
+        //test case
+        test(sortAlg, generateIntegerArr(6, 10));
         //regular case
         test(sortAlg, generateIntegerArr(50, 100));
     }
@@ -36,6 +39,13 @@ public class SortTest {
     public void selectionSortTest() {
         System.out.println("------------------------ 选择排序测试 ------------------------");
         SelectionSort<Integer> sortAlg = new SelectionSort<>();
+        basicTests(sortAlg);
+    }
+
+    @Test
+    public void insertionSortTest() {
+        System.out.println("------------------------ 插入排序测试 ------------------------");
+        InsertionSort<Integer> sortAlg = new InsertionSort<>();
         basicTests(sortAlg);
     }
 
