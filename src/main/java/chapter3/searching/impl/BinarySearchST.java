@@ -4,7 +4,7 @@ import chapter3.searching.api.OST;
 import edu.princeton.cs.algs4.Queue;
 
 /**
- * 基于二分查找+有序数组的符号表实现
+ * Implementation of a Symbol Table based on Binary Search and Ordered Array
  * @param <K>
  * @param <V>
  */
@@ -81,16 +81,6 @@ public class BinarySearchST<K extends Comparable<K>, V> implements OST<K, V> {
     @Override
     public K select(int r) {
         return null;
-    }
-
-    @Override
-    public void deleteMin() {
-
-    }
-
-    @Override
-    public void deleteMax() {
-
     }
 
     @Override
