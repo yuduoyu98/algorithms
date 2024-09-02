@@ -223,7 +223,7 @@ public class BinarySearchST<K extends Comparable<K>, V> implements OST<K, V> {
         else {
             int index = rank(key);
             //key已存在
-            if (index < N && keys[index] == key) {
+            if (index < N && keys[index].compareTo(key) == 0) {
                 return key;
             }
             //key不存在 且 key <= keys <=> key < keys
