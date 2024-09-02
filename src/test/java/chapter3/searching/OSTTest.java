@@ -3,6 +3,7 @@ package chapter3.searching;
 import chapter3.searching.api.OST;
 import chapter3.searching.impl.BinarySearchST;
 import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -10,6 +11,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 
 @RunWith(Parameterized.class)
@@ -29,25 +31,48 @@ public class OSTTest {
     }
 
     @Test
-    public void testPutAndGet() throws InstantiationException, IllegalAccessException {
-        OST<String, Integer> testOst = implClazz.newInstance();
+    public void testRank() throws InstantiationException, IllegalAccessException {
+        OST<String, Integer> ost = implClazz.newInstance();
         String[] splits = "S E A R C H E X A M P L E".split(" ");
-        //TreeMap默认升序
-        Map<String, Integer> ost = new TreeMap<>();
+        //A C E H L M P R S X
         for (int i = 0; i < splits.length; i++) {
-            testOst.put(splits[i], i);
             ost.put(splits[i], i);
         }
 
-        assertEquals(ost.keySet().size(), testOst.size());
-
-        //检测有序
-        String lastKey = null;
-        for (String key : testOst.keys()) {
-            assert lastKey == null || key.compareTo(lastKey) > 0;
-            assertEquals(ost.get(key), testOst.get(key));
-            lastKey = key;
+        StringBuilder sb = new StringBuilder();
+        for (String key : ost.keys()) {
+            sb.append(key).append(" ");
         }
+        System.out.println("ordered keys: " + sb);
+
+        assertEquals(ost.rank("A"), 0);
+        assertEquals(ost.rank("B"), 1);
+        assertEquals(ost.rank("C"), 1);
+        assertEquals(ost.rank("P"), 6);
+        assertEquals(ost.rank("Q"), 7);
+        assertEquals(ost.rank("Y"), 10);
     }
+
+    @Test
+    public void testDelete() throws InstantiationException, IllegalAccessException {
+        OST<String, Integer> ost = implClazz.newInstance();
+        String[] splits = "S E A R C H E X A M P L E".split(" ");
+        //A C E H L M P R S X
+        for (int i = 0; i < splits.length; i++) {
+            ost.put(splits[i], i);
+        }
+        assertThrows(IllegalArgumentException.class, () -> ost.delete(null));
+        int originSize = ost.size();
+        ost.delete("B");
+        assertEquals(ost.size(), originSize);
+        assertEquals(ost.rank("B"), 1);
+        assertEquals(ost.rank("P"), 6);
+        ost.delete("C");
+        assertEquals(ost.size(), originSize - 1);
+        assert (ost.get("C") == null);
+        assertEquals(ost.rank("B"), 1);
+        assertEquals(ost.rank("P"), 5);
+    }
+
 
 }
