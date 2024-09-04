@@ -2,6 +2,7 @@ package chapter3.searching.impl;
 
 import chapter1.fundamentals.api.Queue;
 import chapter1.fundamentals.impl.SimpleQueue;
+import chapter3.searching.api.AutoCheck;
 import chapter3.searching.api.OST;
 
 import java.util.NoSuchElementException;
@@ -12,7 +13,7 @@ import java.util.NoSuchElementException;
  * @param <K>
  * @param <V>
  */
-public class BinarySearchST<K extends Comparable<K>, V> implements OST<K, V> {
+public class BinarySearchST<K extends Comparable<K>, V> implements OST<K, V>, AutoCheck {
 
     private K[] keys;
     private V[] vals;
@@ -80,10 +81,8 @@ public class BinarySearchST<K extends Comparable<K>, V> implements OST<K, V> {
         assert check();
     }
 
-    /**
-     * 内部自动检查
-     */
-    private boolean check() {
+    @Override
+    public boolean check() {
         return !INTERNAL_CHECK || isSorted() && rankCheck();
     }
 
@@ -303,4 +302,5 @@ public class BinarySearchST<K extends Comparable<K>, V> implements OST<K, V> {
             return queue;
         }
     }
+
 }
