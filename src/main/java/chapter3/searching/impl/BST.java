@@ -289,6 +289,18 @@ public class BST<K extends Comparable<K>, V> implements OST<K, V>, AutoCheck {
     }
 
     /**
+     * 树高
+     */
+    public int height() {
+        return height(root);
+    }
+
+    private int height(Node n) {
+        if (n == null) return 0;
+        else return Math.max(height(n.left), height(n.right)) + 1;
+    }
+
+    /**
      * 前序遍历
      */
     public Iterable<K> preOrderTraversal() {
