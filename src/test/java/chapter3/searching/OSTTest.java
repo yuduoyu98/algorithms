@@ -1,6 +1,7 @@
 package chapter3.searching;
 
 import chapter3.searching.api.OST;
+import chapter3.searching.impl.BST;
 import chapter3.searching.impl.BinarySearchST;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +20,8 @@ public class OSTTest {
     @Parameterized.Parameters
     public static Object[] implementations() {
         return new Object[]{
-                BinarySearchST.class
+//                BinarySearchST.class,
+                BST.class,
         };
     }
 
