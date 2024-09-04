@@ -4,6 +4,7 @@ import chapter1.fundamentals.api.Queue;
 import chapter1.fundamentals.impl.SimpleQueue;
 import chapter3.searching.api.AutoCheck;
 import chapter3.searching.api.OST;
+import edu.princeton.cs.algs4.StdOut;
 
 import java.util.NoSuchElementException;
 
@@ -34,8 +35,30 @@ public class BST<K extends Comparable<K>, V> implements OST<K, V>, AutoCheck {
 
     @Override
     public boolean check() {
-        //todo
-        return INTERNAL_CHECK;
+        if (INTERNAL_CHECK) {
+            if (!sizeCheck(root)) StdOut.println("Sizes not consistent");
+            if (!rankCheck()) StdOut.println("Ranks not consistent");
+            return sizeCheck(root) && rankCheck();
+        }
+        else return true;
+    }
+
+    private boolean sizeCheck(Node n) {
+        if (n == null) return true;
+        if (size(n.left) + size(n.right) + 1 != size(n)) return false;
+        else return sizeCheck(n.left) && sizeCheck(n.right);
+    }
+
+    /**
+     *  select(rank(key)) == key
+     *  rank(select(i)) == i
+     */
+    private boolean rankCheck() {
+        for (int i = 0; i < size(); i++)
+            if (i != rank(select(i))) return false;
+        for (K key : keys())
+            if (key.compareTo(select(rank(key))) != 0) return false;
+        return true;
     }
 
     @Override
@@ -47,6 +70,7 @@ public class BST<K extends Comparable<K>, V> implements OST<K, V>, AutoCheck {
         }
         if (isEmpty()) root = new Node(key, val);
         else put(root, key, val);
+        assert check();
     }
 
     private void put(Node n, K key, V val) {
@@ -87,6 +111,7 @@ public class BST<K extends Comparable<K>, V> implements OST<K, V>, AutoCheck {
     public void delete(K key) {
         AutoCheck.keyNotNull(key, "delete");
         root = delete(root, key);
+        assert check();
     }
 
     /**
