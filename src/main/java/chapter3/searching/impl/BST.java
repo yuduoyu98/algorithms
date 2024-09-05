@@ -8,25 +8,23 @@ import edu.princeton.cs.algs4.StdOut;
 
 import java.util.NoSuchElementException;
 
-import static org.junit.Assert.*;
-
 /**
  * OST implementation based on Binary Search Tree (recursive)
  */
 public class BST<K extends Comparable<K>, V> implements OST<K, V>, AutoCheck {
 
-    private Node root;
-    private boolean INTERNAL_CHECK = false;
+    protected Node root;
+    protected boolean INTERNAL_CHECK = false;
 
     // private修饰的内部类成员变量只能在外部类的内部访问
-    private class Node {
-        private K key;
-        private V val;
-        private Node left, right;
+    protected class Node {
+        protected K key;
+        protected V val;
+        protected Node left, right;
         // 当前节点有多少个子节点(包括自身)
-        private int N;
+        protected int N;
 
-        private Node(K key, V val) {
+        protected Node(K key, V val) {
             this.key = key;
             this.val = val;
             this.N = 1;
@@ -43,7 +41,7 @@ public class BST<K extends Comparable<K>, V> implements OST<K, V>, AutoCheck {
         else return true;
     }
 
-    private boolean sizeCheck(Node n) {
+    protected boolean sizeCheck(Node n) {
         if (n == null) return true;
         if (size(n.left) + size(n.right) + 1 != size(n)) return false;
         else return sizeCheck(n.left) && sizeCheck(n.right);
@@ -53,7 +51,7 @@ public class BST<K extends Comparable<K>, V> implements OST<K, V>, AutoCheck {
      *  select(rank(key)) == key
      *  rank(select(i)) == i
      */
-    private boolean rankCheck() {
+    protected boolean rankCheck() {
         for (int i = 0; i < size(); i++)
             if (i != rank(select(i))) return false;
         for (K key : keys())
@@ -308,7 +306,7 @@ public class BST<K extends Comparable<K>, V> implements OST<K, V>, AutoCheck {
         return size(root);
     }
 
-    private int size(Node n) {
+    protected int size(Node n) {
         if (n == null) return 0;
         else return n.N;
     }
@@ -367,82 +365,4 @@ public class BST<K extends Comparable<K>, V> implements OST<K, V>, AutoCheck {
         if (n.right != null && n.key.compareTo(hi) < 0) preOrderTraversalWithBound(n.right, lo, hi, queue);
     }
 
-    // Simple Test
-    public static void main(String[] args) {
-        BST<Integer, Integer> bst = new BST<>();
-        bst.put(1, 1);
-        bst.put(2, 3);
-        bst.put(0, 4);
-        bst.put(7, 4);
-        bst.put(5, 4);
-        bst.put(5, 6);
-        bst.put(10, 4);
-        // input:  1 2 0 7 5 5 10
-        // output: 0 1 2 5 7 10
-        StringBuilder sb = new StringBuilder("order: ");
-        for (Integer key : bst.preOrderTraversal()) {
-            sb.append(key).append(" ");
-        }
-        System.out.println(sb);
-        // size
-        assertEquals(6, bst.size());
-        System.out.println("✔✔✔ size() checked");
-        // get
-        assertNull(bst.get(8));
-        assertEquals(Integer.valueOf(6), bst.get(5));
-        System.out.println("✔✔✔ get() checked");
-        // min & max
-        assertEquals(Integer.valueOf(0), bst.min());
-        assertEquals(Integer.valueOf(10), bst.max());
-        System.out.println("✔✔✔ min() & max() checked");
-        // floor & ceiling
-        assertEquals(Integer.valueOf(2), bst.floor(3));
-        assertNull(bst.floor(-1));
-        assertEquals(Integer.valueOf(7), bst.floor(7));
-        assertEquals(Integer.valueOf(10), bst.ceiling(8));
-        assertNull(bst.ceiling(11));
-        assertEquals(Integer.valueOf(7), bst.ceiling(7));
-        System.out.println("✔✔✔ floor() & ceiling checked");
-        // select
-        assertEquals(Integer.valueOf(1), bst.select(1));
-        assertThrows(IllegalArgumentException.class, () -> bst.select(6));
-        // keys & keys with bound
-        Iterable<Integer> keys = bst.keys();
-        StringBuilder sb1 = new StringBuilder("keys: ");
-        for (Integer i : keys)
-            sb1.append(i).append(" ");
-        System.out.println(sb1);
-        StringBuilder sb2 = new StringBuilder("keys within [1,8]: ");
-        Iterable<Integer> keysWithBound = bst.preOrderTraversalWithBound(1, 8);
-        for (Integer i : keysWithBound)
-            sb2.append(i).append(" ");
-        System.out.println(sb2);
-        // rank
-        assertEquals(0, bst.rank(-1));
-        assertEquals(2, bst.rank(2));
-        assertEquals(3, bst.rank(3));
-        assertEquals(6, bst.rank(11));
-        System.out.println("✔✔✔ rank() checked");
-        // deleteMin & deleteMax
-        bst.deleteMin();
-        assertEquals(5, bst.size());
-        assertNull(bst.get(0));
-        bst.put(0, 4);
-        System.out.println("✔✔✔ deleteMin() checked");
-        bst.deleteMax();
-        assertEquals(5, bst.size());
-        assertNull(bst.get(10));
-        bst.put(10, 4);
-        System.out.println("✔✔✔ deleteMax() checked");
-        // delete
-        bst.delete(1);
-        assertEquals(5, bst.size());
-        assertNull(bst.get(1));
-        StringBuilder sb3 = new StringBuilder("After delete key 1: ");
-        for (Integer i : bst.preOrderTraversal()) {
-            sb3.append(i).append(" ");
-        }
-        System.out.println(sb3);
-        System.out.println("✔✔✔ delete() checked");
-    }
 }
