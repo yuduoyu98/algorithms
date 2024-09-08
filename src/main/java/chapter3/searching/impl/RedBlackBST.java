@@ -119,18 +119,68 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
         if (cmp > 0) n.right = put(n.right, key, val);
         else if (cmp < 0) n.left = put(n.left, key, val);
         else n.val = val;
-        // adjustment
-        Node newRoot = n;
-        // sequence matters:
+        // ----------------------- adjustment -------------------------
+        // Node n always should point to the root of the subtree !!
+        // Sequence Matters:
         //  1.correct right-leaning red links
-        if (isRed(n.right) && !isRed(n.left)) newRoot = rotateLeft(n);
+        if (isRed(n.right) && !isRed(n.left)) n = rotateLeft(n);
         //  2.rotateRight (Finnish rotation before color flipping)
-        if (isRed(n.left) && isRed(n.left.left)) newRoot = rotateRight(n);
+        if (isRed(n.left) && isRed(n.left.left)) n = rotateRight(n);
         //  3.Flip color
         if (isRed(n.left) && isRed(n.right)) flipColors(n);
 
-        newRoot.N = size(newRoot.left) + size(newRoot.right) + 1;
-        return newRoot;
+        n.N = size(n.left) + size(n.right) + 1;
+        return n;
+    }
+
+    /**
+     * need to override because the root here is not the same one in its super class
+     */
+    @Override
+    public boolean isEmpty() {
+        return root == null;
+    }
+
+    /**
+     * Simple Visualization of tree
+     */
+    public void print() {
+        if (isEmpty())
+            System.out.println("The Red-Black BST is empty");
+        else printTree(root, 0);
+    }
+
+    /**
+     * use post-order traversal to print, like:
+     *        7(B)
+     * 5(R)
+     *               3(R)
+     *        2(B)
+     *               1(R)
+     */
+    private void printTree(Node n, int level) {
+        if (n == null) return;
+
+        // print right subtree
+        printTree(n.right, level + 1);
+        // print current node
+        for (int i = 0; i < level; i++)
+            System.out.print("      ");
+        System.out.println(n.key + (isRed(n) ? "(R)" : "(B)"));
+        // print left subtree
+        printTree(n.left, level + 1);
+    }
+
+    public static void main(String[] args) {
+        // print test
+        RedBlackBST<String, Integer> rbt = new RedBlackBST<>();
+        rbt.put("S", 1);
+        rbt.put("E", 1);
+        rbt.put("A", 1);
+        rbt.put("R", 1);
+        rbt.put("C", 1);
+        rbt.put("H", 1);
+        rbt.print();
     }
 
 }
