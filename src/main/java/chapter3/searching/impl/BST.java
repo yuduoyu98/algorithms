@@ -50,7 +50,7 @@ public class BST<K extends Comparable<K>, V> implements OST<K, V>, AutoCheck {
      * - Every node is larger than all the nodes in the left subtree,
      *   and smaller than the keys in the right subtree
      */
-    protected boolean isBST() {
+    private boolean isBST() {
         return isBST(root, null, null);
     }
 
