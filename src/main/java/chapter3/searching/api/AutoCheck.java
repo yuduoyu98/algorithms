@@ -7,8 +7,11 @@ public interface AutoCheck {
 
     /**
      * 自动校验逻辑
+     * 默认关闭
      */
-    boolean check();
+    default boolean check(){
+        return true;
+    }
 
     static void keyNotNull(Object key, String method) {
         if (key == null) throw new IllegalArgumentException("argument to " + method + "() is null");

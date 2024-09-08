@@ -16,12 +16,15 @@ public class BST<K extends Comparable<K>, V> implements OST<K, V>, AutoCheck {
     protected Node root;
     protected boolean INTERNAL_CHECK = false;
 
-    // private修饰的内部类成员变量只能在外部类的内部访问
+    // Some Java syntax about inner class
+    // 1.private modified members/methods within an inner class can only be accessed within the outer class.
+    // 2.static inner class do not have the pointer to the outer class. So if modified by static, class Node need
+    // specify the generics explicitly
     protected class Node {
         protected K key;
         protected V val;
         protected Node left, right;
-        // 当前节点有多少个子节点(包括自身)
+        // count of the sub nodes (self included)
         protected int N;
 
         protected Node(K key, V val) {
