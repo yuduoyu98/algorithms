@@ -47,8 +47,8 @@ public class BST<K extends Comparable<K>, V> implements OST<K, V>, AutoCheck {
 
     /**
      * Symmetric order check
-     * -> Every node is larger than all the nodes in the left subtree,
-     *    and smaller than the keys in the right subtree
+     * - Every node is larger than all the nodes in the left subtree,
+     *   and smaller than the keys in the right subtree
      */
     protected boolean isBST() {
         return isBST(root, null, null);
@@ -56,14 +56,13 @@ public class BST<K extends Comparable<K>, V> implements OST<K, V>, AutoCheck {
 
     /**
      * recursive solution
-     * @param n current node
-     * @param min node key's lower limit
-     * @param max node key's upper limit
-     * @return whether the (sub)tree rooted at n is in symmetric order
+     * @param n root of the subtree
+     * @param min lower limit of the n's key
+     * @param max upper limit of node n's key
+     * @return whether the subtree rooted at n is in symmetric order
      */
     private boolean isBST(Node n, K min, K max) {
         if (n == null) return true;
-        // min/max is null == empty constraint
         if (min != null && n.key.compareTo(min) <= 0) return false;
         if (max != null && n.key.compareTo(max) >= 0) return false;
         return isBST(n.left, min, n.key) && isBST(n.right, n.key, max);
