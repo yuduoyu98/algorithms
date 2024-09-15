@@ -1,9 +1,12 @@
 package chapter3.searching.impl;
 
 import chapter3.searching.api.AutoCheck;
+import edu.princeton.cs.algs4.StdOut;
+
+import java.util.NoSuchElementException;
 
 /**
- * (Left-leaning) Red-Black BST implementation of OST
+ * (Left-leaning) Red-Black BST implementation of 2-3 tree
  * - is BST (BST methods are applicable)
  * - 1-1 correspondent to 2-3 tree
  */
@@ -12,7 +15,8 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
     private static final boolean RED = true;
     private static final boolean BLACK = false;
 
-    private Node root;
+    private boolean INTERNAL_CHECK = true;
+    private Node root; // use own root instead of inheriting BST's root
 
     private class Node extends BST<K, V>.Node {
         private Node right, left;
@@ -86,12 +90,51 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
      * @param p parent node
      */
     private void flipColors(Node p) {
-        assert !isRed(p);
-        assert isRed(p.left);
-        assert isRed(p.right);
-        p.color = RED;
-        p.left.color = BLACK;
-        p.right.color = BLACK;
+        // h must have opposite color of its two children
+        assert (p != null) && (p.left != null) && (p.right != null);
+        assert (!isRed(p) && isRed(p.left) && isRed(p.right))
+                || (isRed(p) && !isRed(p.left) && !isRed(p.right));
+        p.color = !p.color;
+        p.left.color = !p.left.color;
+        p.right.color = !p.right.color;
+    }
+
+    @Override
+    public boolean check() {
+        if (INTERNAL_CHECK) {
+            if (!isBST()) StdOut.println("Not in symmetric order");
+            if (!is23Tree()) StdOut.println("Not a 2-3 tree");
+            if (!isBlackBalanced()) StdOut.println("Not balanced");
+            if (!isSizeConsistent()) StdOut.println("Subtree counts not consistent");
+            return isBST() && is23Tree() && isBlackBalanced() && isSizeConsistent();
+        }
+        else return true;
+    }
+
+    private boolean isSizeConsistent() {return isSizeConsistent(root);}
+
+    private boolean isSizeConsistent(Node n) {
+        if (n == null) return true;
+        if (n.N != size(n.left) + size(n.right) + 1) return false;
+        return isSizeConsistent(n.left) && isSizeConsistent(n.right);
+    }
+
+    /**
+     * todo
+     * check whether black height is perfectly balanced
+     */
+    private boolean isBlackBalanced() {
+        return false;
+    }
+
+    /**
+     * todo
+     * whether the tree contains:
+     * - either right-leaning red link
+     * - or a node with two red link attached
+     */
+    private boolean is23Tree() {
+        return false;
     }
 
     @Override
@@ -119,7 +162,201 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
         if (cmp > 0) n.right = put(n.right, key, val);
         else if (cmp < 0) n.left = put(n.left, key, val);
         else n.val = val;
-        // ----------------------- adjustment -------------------------
+        // adjustments
+        return balance(n);
+    }
+
+    /**
+     * todo
+     * recursive solution
+     */
+    @Override
+    public void delete(K key) {
+        AutoCheck.keyNotNull(key, "delete");
+
+        super.delete(key);
+    }
+
+    /**
+     * (implemented myself)
+     * recursive solution
+     * revision idea:
+     * - most of the code at root is the same with any other node dealt in the recursive method
+     * - Difference: have to keep the root color BLACK after color flipping
+     *      - only occur when root and its children are all 2-node
+     * - Solution:
+     *      - if the above scenario occur, turn the color of root to RED ahead
+     *        -> when flipping color after, back to BLACK as expected.
+     *
+     * @see chapter3.searching.impl.RedBlackBST#deleteMin()
+     */
+    @SuppressWarnings("unused")
+    public void deleteMin1() {
+        if (isEmpty()) throw new NoSuchElementException("BST underflow");
+        //
+        // root is the minimum -> single 2-node (right child's existence will break the balance)
+        if (root.left == null) {
+            root = null;
+            return;
+        }
+        // if root is a 2-node
+        if (!isRed(root.left)) {
+            // ensure the left-child is not a 2-node before moving left
+            // left-child of root is 2-node
+            if (!isRed(root.left.left)) {
+                // right-child of root is a 3-node
+                if (isRed(root.right.left)) { // root.right won't be null
+                    root = borrowFromRight2Left(root);
+                }
+                // right-child of root is a 2-node as well
+                else {
+                    // form a temporary 4-node with two red link attached to root
+                    flipColors(root);
+                    root.color = BLACK;
+                }
+            }
+        }
+        root.left = deleteMin1(root.left);
+        root = balance(root);
+        root.color = BLACK;
+    }
+
+    /**
+     * (implemented myself)
+     * delete the minimum node of the subtree
+     * @param n the root of the subtree (should not be a 2-node)
+     * @return the new root of the subtree
+     */
+    private Node deleteMin1(Node n) {
+        // left-child of n is not a 2-node
+        if (n.left == null) return null;
+            // n.left is a 2-node
+        else if (!isRed(n.left) && !isRed(n.left.left)) {
+            // n.right is a 3-node
+            if (isRed(n.right.left)) n = borrowFromRight2Left(n);
+                // n.right is a 2-node
+            else flipColors(n);
+        }
+        // moving left
+        n.left = deleteMin1(n.left);
+        // adjustments after deletion
+        return balance(n);
+    }
+
+    /**
+     * (implemented myself)
+     *                     rotate right            rotate left
+     *            o                      o                            b
+     *          /    \                 /    \                       /    \
+     *         l      r       =>      l      b         =>          o      r
+     *        /     /   \            /     /   \                  / \    /  \
+     *      s1     b    s4         s1     s2    r                l  s2  s3  s4
+     *            /  \                        /  \              /
+     *           s2  s3                      s3   s4           s1
+     * Nodes:
+     * - o (origin root)
+     * - l (left-child of o)
+     * - r (right-child of o)
+     * - b (node to be borrowed)
+     * - s1~s4: subtree 1~4
+     * Preconditions:
+     * - l: 2-node
+     * - r: 3-node -> b is red
+     * @param originRoot see above
+     * @return new root
+     */
+    private Node borrowFromRight2Left(Node originRoot) {
+        // rotate right
+        Node originRightChild = originRoot.right;
+        Node newRightChild = originRightChild.left;
+        originRightChild.left = newRightChild.right;
+        newRightChild.right = originRightChild;
+        newRightChild.color = originRightChild.color;
+        newRightChild.N = size(originRightChild);
+        originRightChild.N = size(originRightChild.left) + size(originRightChild.right) + 1;
+        originRoot.right = newRightChild;
+
+        // rotate left
+        Node newRoot = originRoot.right;
+        originRoot.right = newRoot.left;
+        newRoot.left = originRoot;
+        newRoot.color = originRoot.color;
+        originRoot.left.color = RED;
+        newRoot.N = size(originRoot);
+        originRoot.N = size(originRoot.left) + size(originRoot.right) + 1;
+
+        return newRoot;
+    }
+
+    /**
+     * book version
+     */
+    @Override
+    public void deleteMin() {
+        if (isEmpty()) throw new NoSuchElementException("BST underflow");
+
+        // if both children of root are black, set root to red
+        if (!isRed(root.left) && !isRed(root.right))
+            root.color = RED;
+
+        root = deleteMin(root);
+        if (!isEmpty()) root.color = BLACK;
+    }
+
+    /**
+     * book version
+     */
+    private Node deleteMin(Node n) {
+        if (n.left == null)
+            return null;
+
+        if (!isRed(n.left) && !isRed(n.left.left))
+            n = moveRedLeft(n);
+
+        n.left = deleteMin(n.left);
+        return balance(n);
+    }
+
+    /**
+     * book version
+     *                   flipColor(n)           rotateRight(n.r)          rotateLeft(n)              flipColor(n.r.l)
+     *          n(R)                    n(B)                    n(B)                        n.r.l(B)                   n.r.l(R)
+     *         /    \                  /    \                  /    \                       /    \                     /    \
+     *      n.l(B) n.r(B)    ->     n.l(R) n.r(R)   ->      n.l(R) n.r.l(R)    ->        n(R)    n.l(R)      ->     n(B)    n.l(B)
+     *       /      /                /      /                /         \                 /                          /
+     *   n.l.l(B) n.r.l(R)       n.l.l(B) n.r.l(R)       n.l.l(B)     n.l(R)          n.l(R)                     n.l(R)
+     *                                                                                 /                          /
+     *                                                                             n.l.l(B)                   n.l.l(B)
+     */
+    private Node moveRedLeft(Node h) {
+        // assert (h != null);
+        // assert isRed(h) && !isRed(h.left) && !isRed(h.left.left);
+
+        flipColors(h);
+        System.out.println("-------------------------");
+        printTree(h, 0);
+
+        if (isRed(h.right.left)) {
+            h.right = rotateRight(h.right);
+            System.out.println("-------------------------");
+            printTree(h, 0);
+            h = rotateLeft(h);
+            System.out.println("-------------------------");
+            printTree(h, 0);
+            flipColors(h);
+            System.out.println("-------------------------");
+            printTree(h, 0);
+        }
+        return h;
+    }
+
+    /**
+     * adjustments after recursion:
+     * 1.right-leaning red link correction
+     * 2.two consecutive red links correction
+     * 3.both children are red correction
+     */
+    private Node balance(Node n) {
         // Node n always should point to the root of the subtree !!
         // Sequence Matters:
         //  1.correct right-leaning red links
@@ -128,9 +365,121 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
         if (isRed(n.left) && isRed(n.left.left)) n = rotateRight(n);
         //  3.Flip color
         if (isRed(n.left) && isRed(n.right)) flipColors(n);
-
-        n.N = size(n.left) + size(n.right) + 1;
         return n;
+    }
+
+    /**
+     * (implemented myself)
+     * delete the max node from the tree
+     * recursive solution
+     */
+    @SuppressWarnings("unused")
+    public void deleteMax1() {
+        if (isEmpty()) throw new NoSuchElementException("BST underflow");
+
+        // if root is the max node
+        if (root.right == null) {
+            root = root.left;
+            return;
+        }
+        if (!isRed(root.right.left) && !isRed(root.left)) {
+            root.color = RED;
+        }
+        // root.right is not null => able to move right
+        root = deleteMax1(root);
+        root = balance(root);
+        if (!isEmpty()) root.color = BLACK;
+    }
+
+    /**
+     * (implemented myself)
+     * delete the max node of the subtree not breaking the invariants and return the new root of the subtree
+     * precondition: n is not a 2-node (either n is red or n.left is red)
+     * @param n root of the subtree
+     * @return new root of the subtree
+     */
+    private Node deleteMax1(Node n) {
+        // n is the max node
+        if (n.right == null) {
+            if (n.left != null) { // due to perfect black balance, if n has its left child, it must be red.
+                n.left.color = n.color;
+            }
+            return n.left;
+        }
+        // ensure right child of n is not a 2-node
+        // if n.right is 2-node
+        if (!isRed(n.right.left)) {
+            // n.left must not be null due to perfect black balance
+            // n is a 3-node -> rotate right
+            if (isRed(n.left)) {
+                n = rotateRight(n);
+            }
+            // n is a 2-node and n.left is a 3-node -> 'borrow' one from left
+            else if (isRed(n.left.left)) {
+                flipColors(n);
+                rotateRight(n);
+            }
+            // n is 2-node and n.left is a 2-node
+            else {
+                // a temporary 4-node
+                flipColors(n);
+            }
+        }
+        n.right = deleteMax1(n.right);
+        balance(n);
+        return n;
+    }
+
+    /**
+     * (book version)
+     * Removes the largest key and associated value from the symbol table.
+     * @throws NoSuchElementException if the symbol table is empty
+     */
+    public void deleteMax() {
+        if (isEmpty()) throw new NoSuchElementException("BST underflow");
+
+        // if both children of root are black, set root to red
+        if (!isRed(root.left) && !isRed(root.right))
+            root.color = RED;
+
+        root = deleteMax(root);
+        if (!isEmpty()) root.color = BLACK;
+        // assert check();
+    }
+
+    /**
+     * (book version)
+     * delete the key-value pair with the maximum key rooted at h
+     */
+    private Node deleteMax(Node h) {
+        if (isRed(h.left))
+            h = rotateRight(h);
+
+        if (h.right == null)
+            return null;
+
+        if (!isRed(h.right) && !isRed(h.right.left))
+            h = moveRedRight(h);
+
+        h.right = deleteMax(h.right);
+
+        return balance(h);
+    }
+
+    /**
+     * (book version)
+     * Assuming that h is red and both h.right and h.right.left
+     * are black, make h.right or one of its children red.
+     */
+    private Node moveRedRight(Node h) {
+        // assert (h != null);
+        // assert isRed(h) && !isRed(h.right) && !isRed(h.right.left);
+        flipColors(h);
+        if (isRed(h.left.left)) {
+            h = rotateRight(h);
+            flipColors(h);
+        }
+        return h;
     }
 
     /**
@@ -172,15 +521,38 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
     }
 
     public static void main(String[] args) {
-        // print test
-        RedBlackBST<String, Integer> rbt = new RedBlackBST<>();
-        rbt.put("S", 1);
-        rbt.put("E", 1);
-        rbt.put("A", 1);
-        rbt.put("R", 1);
-        rbt.put("C", 1);
-        rbt.put("H", 1);
-        rbt.print();
+//        // print test
+//        RedBlackBST<String, Integer> rbt = new RedBlackBST<>();
+//        rbt.put("S", 1);
+//        rbt.put("E", 1);
+//        rbt.put("A", 1);
+//        rbt.put("R", 1);
+//        rbt.put("C", 1);
+//        rbt.put("H", 1);
+//        rbt.print();
+
+        // delete test
+        RedBlackBST<Integer, Integer> rbt2 = new RedBlackBST<>();
+        rbt2.put(10, 1);
+        rbt2.put(5, 1);
+        rbt2.put(15, 1);
+        rbt2.put(3, 1);
+        rbt2.put(7, 1);
+//        rbt2.put(13, 1);
+//        rbt2.put(17, 1);
+//        rbt2.put(11, 1);
+//        rbt2.put(14, 1);
+        StdOut.println("---------------- origin -----------------");
+        rbt2.print();
+//        rbt2.deleteMin1();
+//        rbt2.deleteMin();
+//        rbt2.deleteMax1();
+        rbt2.deleteMax();
+        StdOut.println("---------------- result -----------------");
+        rbt2.print();
+        // 1.borrow from right
+//        rbt2.deleteMin();
+//        rbt2.print();
     }
 
 }
