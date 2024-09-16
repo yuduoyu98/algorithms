@@ -87,19 +87,20 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
     /**
      * Flip the color of p and its children to the opposite color
      * - Flip the color of p to avoid two red links connecting to 1 node
-     * - delete?
      * @param p parent node
      */
     private void flipColors(Node p) {
         // h must have opposite color of its two children
         assert (p != null) && (p.left != null) && (p.right != null);
-        assert (!isRed(p) && isRed(p.left) && isRed(p.right))
-                || (isRed(p) && !isRed(p.left) && !isRed(p.right));
+        assert (!isRed(p) && isRed(p.left) && isRed(p.right)) || (isRed(p) && !isRed(p.left) && !isRed(p.right));
         p.color = !p.color;
         p.left.color = !p.left.color;
         p.right.color = !p.right.color;
     }
 
+    /**
+     * if assert doesn't work, add '-ea' to VMOptions
+     */
     @Override
     public boolean check() {
         if (INTERNAL_CHECK) {
@@ -168,7 +169,7 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
     }
 
     /**
-     * todo
+     * (self implemented)
      * recursive solution
      */
     @Override
@@ -212,8 +213,8 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
                 // right-child of root is a 2-node as well
                 else {
                     // form a temporary 4-node with two red link attached to root
+                    root.color = RED;
                     flipColors(root);
-                    root.color = BLACK;
                 }
             }
         }
@@ -334,19 +335,10 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
         // assert isRed(h) && !isRed(h.left) && !isRed(h.left.left);
 
         flipColors(h);
-        System.out.println("-------------------------");
-        printTree(h, 0);
-
         if (isRed(h.right.left)) {
             h.right = rotateRight(h.right);
-            System.out.println("-------------------------");
-            printTree(h, 0);
             h = rotateLeft(h);
-            System.out.println("-------------------------");
-            printTree(h, 0);
             flipColors(h);
-            System.out.println("-------------------------");
-            printTree(h, 0);
         }
         return h;
     }
@@ -529,41 +521,6 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
         System.out.println(n.key + (isRed(n) ? "(R)" : "(B)"));
         // print left subtree
         printTree(n.left, level + 1);
-    }
-
-    public static void main(String[] args) {
-//        // print test
-//        RedBlackBST<String, Integer> rbt = new RedBlackBST<>();
-//        rbt.put("S", 1);
-//        rbt.put("E", 1);
-//        rbt.put("A", 1);
-//        rbt.put("R", 1);
-//        rbt.put("C", 1);
-//        rbt.put("H", 1);
-//        rbt.print();
-
-        // delete test
-        RedBlackBST<Integer, Integer> rbt2 = new RedBlackBST<>();
-        rbt2.put(10, 1);
-        rbt2.put(5, 1);
-        rbt2.put(15, 1);
-        rbt2.put(3, 1);
-        rbt2.put(7, 1);
-        rbt2.put(13, 1);
-        rbt2.put(17, 1);
-        rbt2.put(11, 1);
-//        rbt2.put(14, 1);
-        StdOut.println("---------------- origin -----------------");
-        rbt2.print();
-//        rbt2.deleteMin1();
-//        rbt2.deleteMin();
-        rbt2.deleteMax1();
-//        rbt2.deleteMax();
-        StdOut.println("---------------- result -----------------");
-        rbt2.print();
-        // 1.borrow from right
-//        rbt2.deleteMin();
-//        rbt2.print();
     }
 
 }
