@@ -130,21 +130,38 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
     }
 
     /**
-     * todo
      * check whether black height is perfectly balanced
      */
     private boolean isBlackBalanced() {
-        return false;
+        int black = 0;     // number of black links on path from root to min
+        Node x = root;
+        while (x != null) {
+            if (!isRed(x)) black++;
+            x = x.left;
+        }
+        return isBlackBalanced(root, black);
+    }
+
+    // check whether there is any path from the root to a leaf doesn't have the given number of black links
+    private boolean isBlackBalanced(Node n, int black) {
+        if (n == null) return black == 0;
+        if (!isRed(n)) black--;
+        return isBlackBalanced(n.left, black) && isBlackBalanced(n.right, black);
     }
 
     /**
-     * todo
      * whether the tree contains:
      * - either right-leaning red link
      * - or a node with two red link attached
      */
-    private boolean is23Tree() {
-        return false;
+    private boolean is23Tree() {return is23Tree(root);}
+
+    private boolean is23Tree(Node n) {
+        if (n == null) return true;
+        if (isRed(n.right)) return false;
+        if (n != root && isRed(n) && isRed(n.left))
+            return false;
+        return is23Tree(n.left) && is23Tree(n.right);
     }
 
     /***************************************************************************
@@ -156,10 +173,12 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
         AutoCheck.keyNotNull(key, "put");
         if (val == null) {
             delete1(key);
+            assert check();
             return;
         }
         root = put(root, key, val);
         root.color = BLACK; // ensure the root is BLACK
+        assert check();
     }
 
     /**
@@ -190,6 +209,7 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
             root.color = RED;
         root = delete1(root, key);
         if (!isEmpty()) root.color = BLACK;
+        assert check();
     }
 
     /**
@@ -293,7 +313,7 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
 
         root = delete(root, key);
         if (!isEmpty()) root.color = BLACK;
-        // assert check();
+        assert check();
     }
 
     /**
@@ -373,6 +393,7 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
         root.left = deleteMin1(root.left);
         root = balance(root);
         root.color = BLACK;
+        assert check();
     }
 
     /**
@@ -455,6 +476,7 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
 
         root = deleteMin(root);
         if (!isEmpty()) root.color = BLACK;
+        assert check();
     }
 
     /**
@@ -510,6 +532,7 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
         if (isRed(n.left) && isRed(n.left.left)) n = rotateRight(n);
         //  3.Flip color
         if (isRed(n.left) && isRed(n.right)) flipColors(n);
+        n.N = size(n.left) + size(n.right) + 1;
         return n;
     }
 
@@ -534,6 +557,7 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
         // root.right is not null => able to move right
         root = deleteMax1(root);
         if (!isEmpty()) root.color = BLACK;
+        assert check();
     }
 
     /**
@@ -588,7 +612,7 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
 
         root = deleteMax(root);
         if (!isEmpty()) root.color = BLACK;
-        // assert check();
+        assert check();
     }
 
     /**
