@@ -15,6 +15,7 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
     private static final boolean RED = true;
     private static final boolean BLACK = false;
 
+    @SuppressWarnings("FieldCanBeLocal")
     private boolean INTERNAL_CHECK = true;
     private Node root; // use own root instead of inheriting BST's root
 
@@ -193,7 +194,7 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
     @SuppressWarnings("unused")
     public void deleteMin1() {
         if (isEmpty()) throw new NoSuchElementException("BST underflow");
-        //
+
         // root is the minimum -> single 2-node (right child's existence will break the balance)
         if (root.left == null) {
             root = null;
@@ -382,12 +383,12 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
             root = root.left;
             return;
         }
-        if (!isRed(root.right.left) && !isRed(root.left)) {
+        // borrow case, change the root color ahead for flipping
+        if (!isRed(root.right.left) && !isRed(root.left)) { //root.right is a 2-node and root is a 2-node
             root.color = RED;
         }
         // root.right is not null => able to move right
         root = deleteMax1(root);
-        root = balance(root);
         if (!isEmpty()) root.color = BLACK;
     }
 
@@ -408,31 +409,30 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
         }
         // ensure right child of n is not a 2-node
         // if n.right is 2-node
-        if (!isRed(n.right.left)) {
+        // need to check if right link is red because rotateRight may produce right leaning link
+        if (!isRed(n.right.left) && !isRed(n.right)) {
             // n.left must not be null due to perfect black balance
             // n is a 3-node -> rotate right
             if (isRed(n.left)) {
                 n = rotateRight(n);
             }
-            // n is a 2-node and n.left is a 3-node -> 'borrow' one from left
-            else if (isRed(n.left.left)) {
-                flipColors(n);
-                rotateRight(n);
-            }
-            // n is 2-node and n.left is a 2-node
+            // n is a 2-node (both n's children is BLACK)
             else {
-                // a temporary 4-node
+                // case 1: both n and its children are 2-node -> flip to form a temporary 4-node
+                // case 2: n.left is a 3-node -> 'borrow' one from left -> flip first
                 flipColors(n);
+                if (isRed(n.left.left)) {
+                    n = rotateRight(n);
+                    flipColors(n);
+                }
             }
         }
         n.right = deleteMax1(n.right);
-        balance(n);
-        return n;
+        return balance(n);
     }
 
     /**
      * (book version)
-     * Removes the largest key and associated value from the symbol table.
      * @throws NoSuchElementException if the symbol table is empty
      */
     public void deleteMax() {
@@ -452,12 +452,20 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
      * delete the key-value pair with the maximum key rooted at h
      */
     private Node deleteMax(Node h) {
+        // rotate right even if right child is not a 2-node (h.right.left is RED)
+        // won't cause unnecessary rotate, because it will inevitably rotate either
+        //      in the next right node (ensure h.right.right is not a 2-node)
+        //   or before return (h is the rightest node with a red left child)
         if (isRed(h.left))
             h = rotateRight(h);
 
+        // due to previous adjustment, when h.right is null, h.left shall be null.
+        // based on perfect black balance, as for subtree rooted at h, if h.right is null and h.left is not null, h.left must be RED
+        // so if h.left is RED, h.left shall be rotated ahead
         if (h.right == null)
             return null;
 
+        // h.right is a 2-node
         if (!isRed(h.right) && !isRed(h.right.left))
             h = moveRedRight(h);
 
@@ -472,10 +480,13 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
      * are black, make h.right or one of its children red.
      */
     private Node moveRedRight(Node h) {
-        // assert (h != null);
-        // assert isRed(h) && !isRed(h.right) && !isRed(h.right.left);
         flipColors(h);
         if (isRed(h.left.left)) {
+            // not similar to moveRedLeft: just rotate h.left to the root not h.left.left
+            // principle:
+            // 1.to maintain the perfect black balance, before rotate, the node that will be rotated to the top shall be red
+            // 2.when borrow one from the other side, rotate the nearest node.
+            //   (h.right.left is the nearest node to h on the right side, so does h.left on the left side)
             h = rotateRight(h);
             flipColors(h);
         }
@@ -538,16 +549,16 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
         rbt2.put(15, 1);
         rbt2.put(3, 1);
         rbt2.put(7, 1);
-//        rbt2.put(13, 1);
-//        rbt2.put(17, 1);
-//        rbt2.put(11, 1);
+        rbt2.put(13, 1);
+        rbt2.put(17, 1);
+        rbt2.put(11, 1);
 //        rbt2.put(14, 1);
         StdOut.println("---------------- origin -----------------");
         rbt2.print();
 //        rbt2.deleteMin1();
 //        rbt2.deleteMin();
-//        rbt2.deleteMax1();
-        rbt2.deleteMax();
+        rbt2.deleteMax1();
+//        rbt2.deleteMax();
         StdOut.println("---------------- result -----------------");
         rbt2.print();
         // 1.borrow from right
