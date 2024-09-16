@@ -29,6 +29,10 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
         }
     }
 
+    /***************************************************************************
+     *  Red-black tree helper functions.
+     ***************************************************************************/
+
     private boolean isRed(Node n) {
         if (n == null) return false; // null Nodes' color are defined as BLACK
         else return n.color;
@@ -45,7 +49,7 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
      * @return new root node of the subTree
      */
     private Node rotateLeft(Node p) {
-        assert (p != null) && isRed(p.right); // isRed requires the node to be not null
+        assert (p != null) && isRed(p.right); // require the right child to be RED so that perfect black balance won't break
         // rotate
         Node t = p.right;
         p.right = t.left;
@@ -70,7 +74,7 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
      * @return new root node of the subTree
      */
     private Node rotateRight(Node p) {
-        assert (p != null) && isRed(p.left);
+        assert (p != null) && isRed(p.left); // require the left child to be RED so that perfect black balance won't break
         // rotate
         Node pLeft = p.left;
         p.left = pLeft.right;
@@ -97,6 +101,10 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
         p.left.color = !p.left.color;
         p.right.color = !p.right.color;
     }
+
+    /***************************************************************************
+     *  Red-black tree auto check functions.
+     ***************************************************************************/
 
     /**
      * if assert doesn't work, add '-ea' to VMOptions
@@ -139,11 +147,15 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
         return false;
     }
 
+    /***************************************************************************
+     *  Red-black tree main functions.
+     ***************************************************************************/
+
     @Override
     public void put(K key, V val) {
         AutoCheck.keyNotNull(key, "put");
         if (val == null) {
-            delete(key);
+            delete1(key);
             return;
         }
         root = put(root, key, val);
@@ -151,7 +163,6 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
     }
 
     /**
-     * --------------- 需要重新思考 ------------------
      * insert a new node into the subtree rooted at n
      * No need to care about the subtree root color? ok
      * return the new root of the subtree after adjustment
@@ -169,14 +180,155 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
     }
 
     /**
-     * (self implemented)
-     * recursive solution
+     * (self implemented) recursive solution
      */
-    @Override
-    public void delete(K key) {
+    public void delete1(K key) {
         AutoCheck.keyNotNull(key, "delete");
+        if (isEmpty()) return;
+        // root is a 2-node(both children are BLACK), turn root RED
+        if (!isRed(root.left))
+            root.color = RED;
+        root = delete1(root, key);
+        if (!isEmpty()) root.color = BLACK;
+    }
 
-        super.delete(key);
+    /**
+     * delete key from the subtree rooted at n
+     * 1. ensure the child node stepping into is not a 2-node during the top-down search
+     * 2. ensure
+     * @return new root of the subtree
+     *
+     */
+    private Node delete1(Node n, K key) {
+        if (n == null) return null;
+        int cmp = key.compareTo(n.key);
+        if (cmp > 0) {
+            // ensure the right child is not a 2-node
+            // delete key not found -> head back (repair)
+            if (n.right == null) return n;
+            // n.right is a 2-node
+            if (!isRed(n.right) && !isRed(n.right.left)) {
+                if (isRed(n.left))
+                    n = rotateRight(n);
+                else // both children of n are BLACK
+                    flipColors(n);
+            }
+            n.right = delete1(n.right, key);
+        }
+        else if (cmp < 0) {
+            // ensure the left child is not a 2-node
+            // delete key not found -> head back (repair)
+            if (n.left == null) return n;
+            // n.left is a 2-node
+            if (!isRed(n.left) && !isRed(n.left.left)) {
+                if (isRed(n.right))
+                    n = rotateLeft(n);
+                else
+                    flipColors(n);
+            }
+            n.left = delete1(n.left, key);
+        }
+        else {
+            // delete n
+            // if n is leaf node
+            if (n.left == null && n.right == null)
+                return null;
+            // otherwise, try to find the successor
+            if (n.right != null) {
+                // ensure the initial right node is not a 2-node because unlike root it can not change its color
+                // if n.right is a 2-node, at least one of n and n.left is RED + n.left is not null
+                if (!isRed(n.right) && !isRed(n.right.left)) {
+                    if (isRed(n.left)) { // left child is RED
+                        // rotateRight the node match the key, delete later
+                        n = rotateRight(n);
+                        n.right = delete1(n.right, key);
+                    }
+                    else {
+                        flipColors(n);
+                        if (isRed(n.left.left)) {
+                            // rotateRight the node match the key, delete later
+                            n = rotateRight(n);
+                            flipColors(n);
+                            n.right = delete1(n.right, key);
+                        }
+                        else {
+                            BST<K, V>.Node successor = min(n.right);
+                            n.right = deleteMin(n.right);
+                            n.key = successor.key;
+                            n.val = successor.val;
+                        }
+                    }
+                }
+                else {
+                    BST<K, V>.Node successor = min(n.right);
+                    n.right = deleteMin(n.right);
+                    n.key = successor.key;
+                    n.val = successor.val;
+                }
+            }
+            else {
+                BST<K, V>.Node successor = n.left;
+                n.left = null;
+                n.key = successor.key;
+                n.val = successor.val;
+            }
+        }
+        return balance(n);
+    }
+
+    /**
+     * (book version)
+     * Removes the specified key and its associated value from this symbol table
+     * (if the key is in this symbol table)
+     * @param  key the key
+     * @throws IllegalArgumentException if {@code key} is {@code null}
+     */
+    public void delete(K key) {
+        if (key == null) throw new IllegalArgumentException("argument to delete() is null");
+        if (!contains(key)) return;
+
+        // if both children of root are black, set root to red
+        if (!isRed(root.left) && !isRed(root.right))
+            root.color = RED;
+
+        root = delete(root, key);
+        if (!isEmpty()) root.color = BLACK;
+        // assert check();
+    }
+
+    /**
+     * (book version) need to dive in a bit more
+     * delete the key-value pair with the given key rooted at h
+     */
+    private Node delete(Node h, K key) {
+        if (key.compareTo(h.key) < 0) {
+            // h.left is a 2-node (both h.left and h.left.left are BLACK)
+            // h.right is BLACK?
+            if (!isRed(h.left) && !isRed(h.left.left))
+                h = moveRedLeft(h);
+            h.left = delete(h.left, key);
+        }
+        else {
+            // even key and h.key are equal, there are cases that can not remove h here
+            // because deleteMin need to ensure initial node h.right is not a 2-node
+            if (isRed(h.left))
+                h = rotateRight(h);
+            if (key.compareTo(h.key) == 0 && (h.right == null))
+                return null;
+            // h.right is a 2-node
+            if (!isRed(h.right) && !isRed(h.right.left))
+                h = moveRedRight(h);
+            if (key.compareTo(h.key) == 0) {
+                BST<K, V>.Node x = min(h.right);
+                h.key = x.key;
+                h.val = x.val;
+                // h.val = get(h.right, min(h.right).key);
+                // h.key = min(h.right).key;
+                h.right = deleteMin(h.right);
+            }
+            else h.right = delete(h.right, key);
+        }
+        return balance(h);
     }
 
     /**
@@ -331,8 +483,8 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
      *                                                                             n.l.l(B)                   n.l.l(B)
      */
     private Node moveRedLeft(Node h) {
-        // assert (h != null);
-        // assert isRed(h) && !isRed(h.left) && !isRed(h.left.left);
+        assert (h != null);
+        assert isRed(h) && !isRed(h.left) && !isRed(h.left.left);
 
         flipColors(h);
         if (isRed(h.right.left)) {
@@ -472,6 +624,8 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
      * are black, make h.right or one of its children red.
      */
     private Node moveRedRight(Node h) {
+        assert (h != null);
+        assert isRed(h) && !isRed(h.right) && !isRed(h.right.left);
         flipColors(h);
         if (isRed(h.left.left)) {
             // not similar to moveRedLeft: just rotate h.left to the root not h.left.left
@@ -491,6 +645,27 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
     @Override
     public boolean isEmpty() {
         return root == null;
+    }
+
+    @Override
+    public boolean contains(K key) {
+        AutoCheck.keyNotNull(key, "contains");
+        return get(key) != null;
+    }
+
+    @Override
+    public V get(K key) {
+        AutoCheck.keyNotNull(key, "get");
+        return get(root, key);
+    }
+
+    // class Node's member left and right are not inherited from BST.Node
+    private V get(Node n, K key) {
+        if (n == null) return null;
+        int cmp = key.compareTo(n.key);
+        if (cmp == 0) return n.val;
+        else if (cmp > 0) return get(n.right, key);
+        else return get(n.left, key);
     }
 
     /**

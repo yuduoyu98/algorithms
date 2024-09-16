@@ -219,7 +219,7 @@ public class BST<K extends Comparable<K>, V> implements OST<K, V>, AutoCheck {
     /**
      * @return 返回Node 方便delete获取最小节点对象的引用
      */
-    private Node min(Node n) {
+    protected Node min(Node n) {
         if (n.left != null) return min(n.left);
         else return n;
     }
@@ -230,7 +230,7 @@ public class BST<K extends Comparable<K>, V> implements OST<K, V>, AutoCheck {
         else return max(root).key;
     }
 
-    private Node max(Node n) {
+    protected Node max(Node n) {
         if (n.right != null) return max(n.right);
         else return n;
     }
