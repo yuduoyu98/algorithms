@@ -148,8 +148,8 @@ public class BST<K extends Comparable<K>, V> implements OST<K, V>, AutoCheck {
         if (n == null) return null;
 
         int cmp = key.compareTo(n.key);
-        if (cmp > 0) delete(n.right, key);
-        else if (cmp < 0) delete(n.left, key);
+        if (cmp > 0) n.right = delete(n.right, key);
+        else if (cmp < 0) n.left = delete(n.left, key);
         else {
             if (n.right == null) return n.left;
             else if (n.left == null) return n.right;
@@ -275,7 +275,7 @@ public class BST<K extends Comparable<K>, V> implements OST<K, V>, AutoCheck {
         int cmp = key.compareTo(n.key);
         // 逻辑同floor方法
         if (cmp > 0) return ceiling(n.right, key);
-        else if (cmp < 0) return ceiling(n.right, key) == null ? n.key : ceiling(n.right, key);
+        else if (cmp < 0) return ceiling(n.left, key) == null ? n.key : ceiling(n.left, key);
         else return n.key;
     }
 
