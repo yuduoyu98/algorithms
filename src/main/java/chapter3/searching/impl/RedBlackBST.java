@@ -672,12 +672,6 @@ public class RedBlackBST<K extends Comparable<K>, V> extends BST<K, V> {
     }
 
     @Override
-    public boolean contains(K key) {
-        AutoCheck.keyNotNull(key, "contains");
-        return get(key) != null;
-    }
-
-    @Override
     public V get(K key) {
         AutoCheck.keyNotNull(key, "get");
         return get(root, key);

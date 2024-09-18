@@ -324,11 +324,6 @@ public class BST<K extends Comparable<K>, V> implements OST<K, V>, AutoCheck {
     }
 
     @Override
-    public boolean isEmpty() {
-        return root == null;
-    }
-
-    @Override
     public int size() {
         return size(root);
     }

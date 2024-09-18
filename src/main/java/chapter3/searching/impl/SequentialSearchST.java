@@ -83,11 +83,6 @@ public class SequentialSearchST<K, V> implements ST<K, V> {
     }
 
     @Override
-    public boolean isEmpty() {
-        return first == null;
-    }
-
-    @Override
     public int size() {
         int cnt = 0;
         Node cur = first;

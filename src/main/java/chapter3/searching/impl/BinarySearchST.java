@@ -180,6 +180,7 @@ public class BinarySearchST<K extends Comparable<K>, V> implements OST<K, V>, Au
     /**
      * 落在[lo,mid]
      */
+    @SuppressWarnings("unused")
     private int nonRecursiveRank(K key, int lo, int hi) {
         int rank = 0;
         //循环条件必须包括lo==hi的情况
@@ -242,17 +243,6 @@ public class BinarySearchST<K extends Comparable<K>, V> implements OST<K, V>, Au
             if (key.compareTo(max()) > 0) return null;
             else return keys[rank(key)];
         }
-    }
-
-    @Override
-    public boolean contains(K key) {
-        if (key == null) throw new IllegalArgumentException("argument to contains() is null");
-        else return get(key) != null;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return N == 0;
     }
 
     @Override

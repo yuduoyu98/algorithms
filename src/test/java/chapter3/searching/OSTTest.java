@@ -20,7 +20,7 @@ public class OSTTest {
     @Parameterized.Parameters
     public static Object[] implementations() {
         return new Object[]{
-//                BinarySearchST.class,
+                BinarySearchST.class,
                 BST.class,
         };
     }

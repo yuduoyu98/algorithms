@@ -16,9 +16,14 @@ public interface ST<K, V> {
      */
     void delete(K key);
 
-    boolean contains(K key);
+    default boolean contains(K key) {
+        AutoCheck.keyNotNull(key, "contains");
+        return get(key) == null;
+    }
 
-    boolean isEmpty();
+    default boolean isEmpty() {
+        return size() == 0;
+    }
 
     /**
      * 符号表键值对数量

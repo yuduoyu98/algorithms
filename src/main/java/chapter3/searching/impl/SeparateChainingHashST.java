@@ -8,7 +8,7 @@ import chapter3.searching.api.AutoCheck;
  * Resizing hash table implementation based on separate chaining
  * - resize strategy:
  *      - double when average length of chain >= 10
- *      - half when average length of chain <= 2 (minimum=INIT_CAPACITY)
+ *      - halves when average length of chain <= 2 (minimum=INIT_CAPACITY)
  */
 public class SeparateChainingHashST<K, V> extends AbstractResizingHashTable<K, V> {
 
@@ -34,11 +34,9 @@ public class SeparateChainingHashST<K, V> extends AbstractResizingHashTable<K, V
             return;
         }
         SequentialSearchST<K, V> chain = st[hash(key)];
-        if (chain.contains(key)) {
-            if (N >= 10 * M) resize(2 * M);
-            chain.put(key, val);
-            N++;
-        }
+        if (N >= 10 * M) resize(2 * M);
+        chain.put(key, val);
+        if (!chain.contains(key)) {N++;}
     }
 
     @Override
@@ -56,12 +54,6 @@ public class SeparateChainingHashST<K, V> extends AbstractResizingHashTable<K, V
             N--;
             if (N > INIT_CAPACITY && N <= 2 * M) resize(M / 2);
         }
-    }
-
-    @Override
-    public boolean contains(K key) {
-        AutoCheck.keyNotNull(key, "contains");
-        return get(key) == null;
     }
 
     @Override

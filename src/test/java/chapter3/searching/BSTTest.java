@@ -18,7 +18,7 @@ public class BSTTest {
     @Parameterized.Parameters
     public static Object[] implementations() {
         return new Object[]{
-//                BST.class,
+                BST.class,
                 NonRecursiveBST.class,
         };
     }
