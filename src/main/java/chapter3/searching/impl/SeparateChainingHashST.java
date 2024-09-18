@@ -35,8 +35,8 @@ public class SeparateChainingHashST<K, V> extends AbstractResizingHashTable<K, V
         }
         SequentialSearchST<K, V> chain = st[hash(key)];
         if (N >= 10 * M) resize(2 * M);
+        if (!chain.contains(key)) N++;
         chain.put(key, val);
-        if (!chain.contains(key)) {N++;}
     }
 
     @Override

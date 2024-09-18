@@ -18,7 +18,7 @@ public interface ST<K, V> {
 
     default boolean contains(K key) {
         AutoCheck.keyNotNull(key, "contains");
-        return get(key) == null;
+        return get(key) != null;
     }
 
     default boolean isEmpty() {

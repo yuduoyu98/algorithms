@@ -2,10 +2,14 @@ package chapter3.searching;
 
 import chapter3.searching.api.ST;
 import chapter3.searching.impl.BinarySearchST;
+import chapter3.searching.impl.LinearProbingHashST;
+import chapter3.searching.impl.SeparateChainingHashST;
 import chapter3.searching.impl.SequentialSearchST;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+
+import java.lang.reflect.InvocationTargetException;
 
 import static org.junit.Assert.*;
 
@@ -18,7 +22,9 @@ public class STTest {
     public static Object[] implementations() {
         return new Object[]{
                 SequentialSearchST.class,
-                BinarySearchST.class
+                BinarySearchST.class,
+                LinearProbingHashST.class,
+                SeparateChainingHashST.class
         };
     }
 
@@ -27,8 +33,8 @@ public class STTest {
     }
 
     @Test
-    public void testPutAndGet() throws InstantiationException, IllegalAccessException {
-        ST<String, Integer> st = implClazz.newInstance();
+    public void testPutAndGet() throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        ST<String, Integer> st = implClazz.getConstructor().newInstance();
         st.put("key1", 1);
         st.put("key2", 2);
 
@@ -37,8 +43,8 @@ public class STTest {
     }
 
     @Test
-    public void testDelete() throws InstantiationException, IllegalAccessException {
-        ST<String, Integer> st = implClazz.newInstance();
+    public void testDelete() throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        ST<String, Integer> st = implClazz.getConstructor().newInstance();
         st.put("key1", 1);
         st.put("key2", 2);
 
@@ -48,8 +54,8 @@ public class STTest {
     }
 
     @Test
-    public void testContains() throws InstantiationException, IllegalAccessException {
-        ST<String, Integer> st = implClazz.newInstance();
+    public void testContains() throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        ST<String, Integer> st = implClazz.getConstructor().newInstance();
         st.put("key1", 1);
 
         assertTrue(st.contains("key1"));
@@ -57,8 +63,8 @@ public class STTest {
     }
 
     @Test
-    public void testIsEmpty() throws InstantiationException, IllegalAccessException {
-        ST<String, Integer> st = implClazz.newInstance();
+    public void testIsEmpty() throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        ST<String, Integer> st = implClazz.getConstructor().newInstance();
         assertTrue(st.isEmpty());
 
         st.put("key1", 1);
@@ -66,8 +72,8 @@ public class STTest {
     }
 
     @Test
-    public void testSize() throws InstantiationException, IllegalAccessException {
-        ST<String, Integer> st = implClazz.newInstance();
+    public void testSize() throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        ST<String, Integer> st = implClazz.getConstructor().newInstance();
         assertEquals(0, st.size());
 
         st.put("key1", 1);
@@ -79,8 +85,8 @@ public class STTest {
     }
 
     @Test
-    public void testKeys() throws InstantiationException, IllegalAccessException {
-        ST<String, Integer> st = implClazz.newInstance();
+    public void testKeys() throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        ST<String, Integer> st = implClazz.getConstructor().newInstance();
         st.put("key1", 1);
         st.put("key2", 2);
 
