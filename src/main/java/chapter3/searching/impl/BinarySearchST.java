@@ -4,6 +4,7 @@ import chapter1.fundamentals.api.Queue;
 import chapter1.fundamentals.impl.SimpleQueue;
 import chapter3.searching.api.AutoCheck;
 import chapter3.searching.api.OST;
+import chapter3.searching.api.Resizable;
 
 import java.util.NoSuchElementException;
 
@@ -13,7 +14,7 @@ import java.util.NoSuchElementException;
  * @param <K>
  * @param <V>
  */
-public class BinarySearchST<K extends Comparable<K>, V> implements OST<K, V>, AutoCheck {
+public class BinarySearchST<K extends Comparable<K>, V> implements OST<K, V>, AutoCheck, Resizable {
 
     private K[] keys;
     private V[] vals;
@@ -31,6 +32,7 @@ public class BinarySearchST<K extends Comparable<K>, V> implements OST<K, V>, Au
         N = 0;
     }
 
+    @SuppressWarnings("unused")
     public BinarySearchST() {
         this(DEFAULT_CAPACITY);
     }
@@ -40,7 +42,7 @@ public class BinarySearchST<K extends Comparable<K>, V> implements OST<K, V>, Au
      * 扩容
      */
     @SuppressWarnings("unchecked")
-    private void resize(int capacity) {
+    public void resize(int capacity) {
         K[] tempK = (K[]) new Comparable[capacity];
         V[] tempV = (V[]) new Object[capacity];
         for (int i = 0; i < N; i++) {

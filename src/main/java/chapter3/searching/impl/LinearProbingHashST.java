@@ -22,6 +22,7 @@ public class LinearProbingHashST<K, V> extends AbstractResizingHashTable<K, V> {
         vals = (V[]) new Object[M];
     }
 
+    @SuppressWarnings("unused")
     public LinearProbingHashST() {
         this(INIT_CAPACITY);
     }
@@ -86,8 +87,8 @@ public class LinearProbingHashST<K, V> extends AbstractResizingHashTable<K, V> {
     }
 
     @Override
-    protected void resize(int size) {
-        LinearProbingHashST<K, V> temp = new LinearProbingHashST<>(size);
+    public void resize(int capacity) {
+        LinearProbingHashST<K, V> temp = new LinearProbingHashST<>(capacity);
         for (int i = 0; i < M; i++) {
             if (keys[i] != null) {
                 temp.put(keys[i], vals[i]);

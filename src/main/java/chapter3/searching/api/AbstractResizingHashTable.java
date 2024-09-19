@@ -3,7 +3,7 @@ package chapter3.searching.api;
 /**
  * abstract hash table
  */
-public abstract class AbstractResizingHashTable<K, V> implements ST<K, V> {
+public abstract class AbstractResizingHashTable<K, V> implements ST<K, V>, Resizable {
 
     protected int N; // number of kv pairs
     protected int M; // hash table size
@@ -17,7 +17,5 @@ public abstract class AbstractResizingHashTable<K, V> implements ST<K, V> {
     protected int hash(K key) {
         return (key.hashCode() & 0x7fffffff) % M; // mask off the sign bit
     }
-
-    protected abstract void resize(int size);
 
 }

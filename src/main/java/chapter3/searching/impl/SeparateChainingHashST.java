@@ -16,6 +16,7 @@ public class SeparateChainingHashST<K, V> extends AbstractResizingHashTable<K, V
 
     private SequentialSearchST<K, V>[] st; // array of ST
 
+    @SuppressWarnings("unused")
     public SeparateChainingHashST() {this(INIT_CAPACITY);}
 
     @SuppressWarnings("unchecked")
@@ -68,8 +69,8 @@ public class SeparateChainingHashST<K, V> extends AbstractResizingHashTable<K, V
     }
 
     @Override
-    protected void resize(int size) {
-        SeparateChainingHashST<K, V> temp = new SeparateChainingHashST<>(size);
+    public void resize(int capacity) {
+        SeparateChainingHashST<K, V> temp = new SeparateChainingHashST<>(capacity);
         for (SequentialSearchST<K, V> s : this.st) {
             for (K key : s.keys()) {
                 temp.put(key, s.get(key));
