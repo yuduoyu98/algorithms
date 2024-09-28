@@ -1,9 +1,7 @@
 package chapter4.graphs.api;
 
 /**
- * 单点路径问题
- * 1.是否存在路径
- * 2.指出路径
+ * single-source paths problem
  */
 public abstract class Paths {
 
@@ -18,5 +16,6 @@ public abstract class Paths {
 
     public abstract boolean hasPathTo(int v);
 
+    // path from s to v (null if no such path)
     public abstract Iterable<Integer> pathTo(int v);
 }

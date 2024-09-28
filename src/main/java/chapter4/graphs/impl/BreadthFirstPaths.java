@@ -8,7 +8,7 @@ import chapter4.graphs.api.Graph;
 import chapter4.graphs.api.Paths;
 
 /**
- * 广度优先遍历 BFS实现Paths API （最短路径问题）
+ * BFS based implementation of Paths API （single-source shortest paths）
  */
 public class BreadthFirstPaths extends Paths {
 
@@ -23,28 +23,26 @@ public class BreadthFirstPaths extends Paths {
         bfs(s);
     }
 
-    private void bfs(int s) {
-        //深度优先递归本质上是栈，广度优先需要队列辅助（类似树的层序遍历）
+    private void bfs(int p) {
+        // DFS needs a stack to keep track of the search path
+        // BFS needs a queue to maintain a list of vertices to be visited, in the order similar to the level-order traversal of a tree
         Queue<Integer> queue = new SimpleQueue<>();
-        //添加起点
-        queue.enqueue(s);
-        marked[s] = true;
-        //直到队列为空
-        while (!queue.isEmpty()) {
-            //取出一个队列元素
+        queue.enqueue(p);
+        // different mark timing
+        // BFS mark it before dequeue (unlike DFS mark it after pop)
+        // when exploiting adjacent vertices in the next level/depth
+        // - BFS need to prevent the search from revisiting vertices in previous level (already queued)
+        // - DFS explores as deeply as possible along a single path, mark only the visiting vertex (pop from stack)
+        marked[p] = true;
+        do {
             int v = queue.dequeue();
-            for (int w : graph.adj(v)) {
-                //顶点没有遍历过（最快到达），否则忽略 -> 得到的路径是最短路径
+            for (int w : graph.adj(v))
                 if (!marked[w]) {
-                    //入队
                     queue.enqueue(w);
-                    //路径树
                     edgeTo[w] = v;
-                    //标记已被遍历
                     marked[w] = true;
                 }
-            }
-        }
+        } while (!queue.isEmpty());
     }
 
     @Override

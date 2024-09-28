@@ -8,10 +8,13 @@ import common.TestData;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 /**
- * Paths API 的实现校验
+ * Paths API test
  */
+@RunWith(Parameterized.class)
 public class TestPaths {
 
     private TestData testData = new TestData(
@@ -21,28 +24,39 @@ public class TestPaths {
             "mediumG.txt",
             "largeG.txt");
 
-    @Test
-    public void test() {
-        /**
-         * tinyCG.txt 结果
-         * 0 to 0: 0
-         * 0 to 1: 0-2-1
-         * 0 to 2: 0-2
-         * 0 to 3: 0-2-3
-         * 0 to 4: 0-2-3-4
-         * 0 to 5: 0-2-3-5
-         */
-//        basicImplTest(DepthFirstPaths.class);
-        basicImplTest(BreadthFirstPaths.class);
+    private Class<? extends Paths> implClazz;
+
+    @Parameterized.Parameters
+    public static Object[] implementations() {
+        return new Object[]{
+                DepthFirstPaths.class,
+                BreadthFirstPaths.class,
+        };
     }
 
-    private <P extends Paths> void basicImplTest(Class<P> pathsClass) {
-        StdOut.println("Test Class: " + pathsClass.getSimpleName());
-        testEntry(0, pathsClass, true);
+    public TestPaths(Class<? extends Paths> implClazz) {
+        this.implClazz = implClazz;
+    }
+
+    /**
+     * TinyG
+     * 6 vertices, 8 edges
+     * 0: 2 1 5
+     * 1: 0 2
+     * 2: 0 1 3 4
+     * 3: 5 4 2
+     * 4: 3 2
+     * 5: 3 0
+     * (BFS result should be the shortest path)
+     */
+    @Test
+    public void pathTest() {
+        StdOut.println("Test Class: " + implClazz.getSimpleName());
+        pathTest(0, implClazz, true);
         StdOut.println();
     }
 
-    private <P extends Paths> void testEntry(int start, Class<P> pathsClass, boolean useLocal) {
+    private <P extends Paths> void pathTest(int start, Class<P> pathsClass, boolean useLocal) {
         In in = testData.getIn(DataSize.TINY, useLocal);
         Graph G = new AdjListUGraph(in);
         Paths pathsImpl;
@@ -50,15 +64,20 @@ public class TestPaths {
             pathsImpl = pathsClass.getDeclaredConstructor(Graph.class, int.class).newInstance(G, start);
         } catch (Exception e) {
             e.printStackTrace();
-            return;
+            throw new RuntimeException("build failure");
         }
+        printAllPaths(G, start, pathsImpl);
+    }
+
+    private void printAllPaths(Graph G, int start, Paths pathsImpl) {
         for (int v = 0; v < G.V(); v++) {
             StdOut.print(start + " to " + v + ": ");
             if (pathsImpl.hasPathTo(v)) {
                 for (int p : pathsImpl.pathTo(v)) {
                     if (p == start) {
                         StdOut.print(p);
-                    } else {
+                    }
+                    else {
                         StdOut.print("-" + p);
                     }
                 }
