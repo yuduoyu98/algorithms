@@ -1,13 +1,13 @@
 package chapter4.graphs.api;
 
 /**
- * 有向图
+ * directed graph
  */
 public interface DirectedGraph extends Graph {
 
     /**
-     * 生成一个图的副本 其中所有边的指向反向
-     * 方便找出指向某个点的所有边（adj方法）
+     * generate a replica of the graph with all edge reversed
+     * convenient for using the adj method to find all edges pointing to a certain vertex
      */
     DirectedGraph reverse();
 }

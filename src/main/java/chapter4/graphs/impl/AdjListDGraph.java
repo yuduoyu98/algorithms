@@ -1,10 +1,11 @@
 package chapter4.graphs.impl;
 
+import chapter4.graphs.api.AbstractAdjListGraph;
 import chapter4.graphs.api.DirectedGraph;
 import edu.princeton.cs.algs4.In;
 
 /**
- * 有向图的邻接表实现
+ * directed graph based on adjacent list
  */
 public class AdjListDGraph extends AbstractAdjListGraph implements DirectedGraph {
 
