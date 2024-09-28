@@ -1,31 +1,35 @@
 package chapter4.graphs.api;
 
 /**
- * 图处理算法较多，考虑图的实现和处理算法分开
+ * there are a large number of graph-processing algorithms
+ * choose to decouple the implementations from the graph representation
  */
 public abstract class Search {
 
     protected Graph graph;
 
+    // start vertex
     protected int start;
 
-    /**
-     * 初始化
-     * @param G 图
-     * @param s 起点
-     */
     public Search(Graph G, int s){
         this.graph = G;
         this.start = s;
     }
 
     /**
-     * 顶点v和s是否连通
+     * does vertex v and s(start) connected
      */
     public abstract boolean marked(int v);
 
     /**
-     * 与s连通的顶点总数
+     * count of vertices that connected to s(start)
      */
     public abstract int count();
+
+    /**
+     * if count equals to vertices count => the graph is connected
+     */
+    public boolean connectivity(){
+        return count() == graph.V();
+    }
 }

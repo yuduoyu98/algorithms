@@ -8,10 +8,16 @@ import common.TestData;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
- * Search API 的实现校验
+ * Search API test
  */
+@RunWith(Parameterized.class)
 public class TestSearch {
 
     private TestData testData = new TestData(
@@ -21,22 +27,37 @@ public class TestSearch {
             "mediumG.txt",
             "largeG.txt");
 
+    private Class<? extends Search> implClazz;
+
+    @Parameterized.Parameters
+    public static Object[] implementations() {
+        return new Object[]{
+                QuickUnionSearch.class,
+                DepthFirstSearch.class,
+        };
+    }
+
+    public TestSearch(Class<? extends Search> implClazz) {
+        this.implClazz = implClazz;
+    }
+
     @Test
-    public void test() {
-        basicImplTest(QuickUnionSearch.class);
-        basicImplTest(DepthFirstSearch.class);
-    }
-
-    private <S extends Search> void basicImplTest(Class<S> searchClass) {
-        StdOut.println("Test Class: " + searchClass.getSimpleName());
+    public void connectionTest() {
+        StdOut.println("Test Class: " + implClazz.getSimpleName());
         //0 1 2 3 4 5 6 非连通图
-        testEntry(0, searchClass, true);
+        Search s1 = init(0, implClazz, true);
+        assertTrue(s1.marked(1));
+        assertFalse(s1.marked(9));
+        assertFalse(s1.connectivity());
+
         //9 10 11 12 非连通图
-        testEntry(9, searchClass, true);
-        StdOut.println();
+        Search s2 = init(9, implClazz, true);
+        assertTrue(s2.marked(10));
+        assertFalse(s2.marked(4));
+        assertFalse(s2.connectivity());
     }
 
-    private <S extends Search> void testEntry(int start, Class<S> searchClass, boolean useLocal) {
+    private <S extends Search> Search init(int start, Class<S> searchClass, boolean useLocal) {
         In in = testData.getIn(DataSize.TINY, useLocal);
         Graph G = new AdjListUGraph(in);
         Search searchImpl;
@@ -44,19 +65,8 @@ public class TestSearch {
             searchImpl = searchClass.getDeclaredConstructor(Graph.class, int.class).newInstance(G, start);
         } catch (Exception e) {
             e.printStackTrace();
-            return;
+            throw new RuntimeException("build graph failure");
         }
-        for (int v = 0; v < G.V(); v++) {
-            //与起点相连的顶点
-            if (searchImpl.marked(v)) {
-                StdOut.print(v + " ");
-            }
-        }
-        StdOut.println();
-        //是否为连通图
-        if (searchImpl.count() != G.V()) {
-            StdOut.print("非");
-        }
-        StdOut.println("连通图");
+        return searchImpl;
     }
 }

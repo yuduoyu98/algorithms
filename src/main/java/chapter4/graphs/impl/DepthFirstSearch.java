@@ -1,43 +1,52 @@
 package chapter4.graphs.impl;
 
+import chapter1.fundamentals.api.Stack;
+import chapter1.fundamentals.impl.SimpleStack;
 import chapter4.graphs.api.Graph;
 import chapter4.graphs.api.Search;
 
 import java.util.Arrays;
 
 /**
- * 使用深度优先遍历实现Search API
+ * depth first search
  */
 public class DepthFirstSearch extends Search {
 
-    //遍历过的顶点
+    // mark the vertices visited
     private boolean[] marked;
-    //与起点连通的顶点数
+    // number of vertices connected to s
     private int count;
 
-    /**
-     * 初始化
-     *
-     * @param G 图
-     * @param s 起点
-     */
     public DepthFirstSearch(Graph G, int s) {
         super(G, s);
         marked = new boolean[G.V()];
         Arrays.fill(marked, false);
-        dfs(start);
+        dfs1(start);
     }
 
-    //递归方法
+    // recursive version
+    @SuppressWarnings("unused")
     private void dfs(int p) {
-        //将其标记为已访问
+        // mark the current vertex as visited
         marked[p] = true;
         count++;
-        for (int v : graph.adj(p)) {
-            if (!marked(v)) {
+        for (int v : graph.adj(p))
+            if (!marked(v))
                 dfs(v);
-            }
-        }
+    }
+
+    // non-recursive version
+    @SuppressWarnings("unused")
+    private void dfs1(int p) {
+        Stack<Integer> stack = new SimpleStack<>();
+        stack.push(p);
+        do {
+            int v = stack.pop();
+            marked[v] = true;
+            count++;
+            for (Integer w : graph.adj(v))
+                if (!marked[w]) stack.push(w);
+        } while (!stack.isEmpty());
     }
 
     @Override
@@ -47,6 +56,6 @@ public class DepthFirstSearch extends Search {
 
     @Override
     public int count() {
-        return count++;
+        return count;
     }
 }
