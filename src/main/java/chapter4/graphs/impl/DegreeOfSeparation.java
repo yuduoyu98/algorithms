@@ -1,31 +1,30 @@
 package chapter4.graphs.impl;
 
+import chapter4.graphs.api.Graph;
 import chapter4.graphs.api.SymbolGraph;
 import edu.princeton.cs.algs4.StdOut;
 
 /**
- * 间隔度数问题: 在由movie.txt生成的二分图中找出一系列电影/演员来回溯到某个指定点
+ * Degree of separation
+ * in bipartite graph of movie-performer: degree of separation -> the movie count of the shortest path between 2 performers
  */
-public class DegreeOfSeparation {
+public class DegreeOfSeparation<G extends Graph> {
 
     private String start;
-    private SymbolGraph sg;
+    private SymbolGraph<G> sg;
     private BreadthFirstPaths bfs;
 
-    public DegreeOfSeparation(SymbolGraph sg, String celebrityOrMovie) {
+    public DegreeOfSeparation(SymbolGraph<G> sg, String vertexName) {
         this.sg = sg;
-        this.start = celebrityOrMovie;
+        this.start = vertexName;
         this.bfs = new BreadthFirstPaths(sg.G(), sg.index(start));
     }
 
-    public void printPathTo(String celebrityOrMovie) {
-        int index = sg.index(celebrityOrMovie);
-        if (bfs.hasPathTo(index)) {
-            for (int v : bfs.pathTo(index)) {
+    public void printPathTo(String vertexName) {
+        int index = sg.index(vertexName);
+        if (bfs.hasPathTo(index))
+            for (int v : bfs.pathTo(index))
                 StdOut.println(" " + sg.name(v));
-            }
-        } else {
-            StdOut.println(start + " 与 " + celebrityOrMovie + " 不相关");
-        }
+        else StdOut.println(start + " and " + vertexName + " are irrelevant");
     }
 }
