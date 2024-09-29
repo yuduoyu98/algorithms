@@ -10,10 +10,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * 成环检测代码校验
+ * cycle detection test
+ * {@link UndirectedCycleDetect} for undirected cycle detection
  */
 public class TestCycleDetect {
 
+    // undirected graph with cycle
     private TestData cycleUGData = new TestData(
             null,
             "src/test/java/chapter4/graphs/data/",
@@ -21,6 +23,7 @@ public class TestCycleDetect {
             null,
             null);
 
+    // undirected graph with no cycle
     private TestData noCycleUGData = new TestData(
             null,
             "src/test/java/chapter4/graphs/data/",
@@ -28,6 +31,7 @@ public class TestCycleDetect {
             null,
             null);
 
+    // directed graph with cycle
     private TestData cycleDGData = new TestData(
             null,
             "src/test/java/chapter4/graphs/data/",
@@ -35,6 +39,7 @@ public class TestCycleDetect {
             null,
             null);
 
+    // directed graph with cycle
     private TestData cycleDGData2 = new TestData(
             null,
             "src/test/java/chapter4/graphs/data/",
@@ -57,24 +62,20 @@ public class TestCycleDetect {
 
     @Test
     public void UGCycleTest() {
-        StdOut.println("------------- 无向图成环检测 -------------");
+        StdOut.println("------------- undirected graph cycle detection -------------");
         boolean cycleResult = new UndirectedCycleDetect(cycleUG).hasCycle();
-        assert cycleResult : "有环图误测为无环图";
-        StdOut.println("有环图检测通过");
+        assert cycleResult : "error detection";
         boolean noCycleResult = new UndirectedCycleDetect(noCycleUG).hasCycle();
-        assert !noCycleResult : "无环图误测为有环图";
-        StdOut.println("无环图检测通过");
+        assert !noCycleResult : "error detection";
     }
 
     @Test
     public void UnionFindUGCycleTest() {
-        StdOut.println("------------- 无向图成环检测（并查集实现） -------------");
+        StdOut.println("------------- undirected graph cycle detection(UF) -------------");
         boolean cycleResult = new UnionFindUndirectedCycleDetect(cycleUG).hasCycle();
-        assert cycleResult : "有环图误测为无环图";
-        StdOut.println("有环图检测通过");
+        assert cycleResult : "error detection";
         boolean noCycleResult = new UnionFindUndirectedCycleDetect(noCycleUG).hasCycle();
-        assert !noCycleResult : "无环图误测为有环图";
-        StdOut.println("无环图检测通过");
+        assert !noCycleResult : "error detection";
     }
 
     @Test
