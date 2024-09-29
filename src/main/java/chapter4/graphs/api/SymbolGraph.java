@@ -12,47 +12,44 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * 符号图
+ * symbol graph
  */
 public abstract class SymbolGraph<G extends Graph> {
 
     private G graph;
 
-    //顶点名 -> 索引
+    // name -> id
     protected ST<String, Integer> st;
 
-    //索引 -> 顶点名
+    // id -> name
     protected String[] keys;
 
     /**
-     * 读入文件构造图
+     * build graph from a file
      *
-     * @param filePath 文件名
-     * @param delim    顶点名分隔符
-     * @param useLocal 是否使用本地文件
+     * @param filePath file path
+     * @param delim    delimiter in file to separate vertex names
+     * @param useLocal use local file or web file
      */
     public SymbolGraph(String filePath, String delim, boolean useLocal) {
         In in = getIn(filePath, useLocal);
         st = new ST<>();
-        //第一遍：构造顶点名称和id的映射 + 保存边信息
+        // generate a mapping from vertex name to name, load edges represented by id pairs to a bag
         Bag<Pair<Integer, Integer>> edges = parse(in, delim);
-        //索引 -> 顶点名称
+        // map vertex id to name
         keys = new String[st.size()];
         for (String name : st.keys()) {
             keys[st.get(name)] = name;
         }
-        //第二遍：构造图
+        // build the graph
         graph = graphReflector(st.size());
-        for (Pair<Integer, Integer> edge : edges) {
+        for (Pair<Integer, Integer> edge : edges)
             this.graph.addEdge(edge.getLeft(), edge.getRight());
-        }
     }
 
     /**
-     * 根据泛型反射生成图对象
-     *
-     * @param size 图的定点数
-     * @return G
+     * Generate graph objects based on generic reflection
+     * @param size vertex count
      */
     @SuppressWarnings("unchecked")
     private G graphReflector(int size) {
@@ -69,11 +66,8 @@ public abstract class SymbolGraph<G extends Graph> {
     }
 
     /**
-     * 解析输入 生成顶点索引符号表ST 返回索引化的边信息
-     *
-     * @param in    输入流
-     * @param delim 分隔符
-     * @return 顶点转换为id的边信息
+     * generate a mapping from vertex name to name
+     * load edges represented by id pairs to a bag
      */
     public abstract Bag<Pair<Integer, Integer>> parse(In in, String delim);
 
@@ -81,7 +75,8 @@ public abstract class SymbolGraph<G extends Graph> {
         In in;
         if (useLocal) {
             in = new In(new File(filePath));
-        } else {
+        }
+        else {
             try {
                 in = new In(new URL(filePath));
             } catch (MalformedURLException e) {
@@ -92,30 +87,24 @@ public abstract class SymbolGraph<G extends Graph> {
         return in;
     }
 
-    /**
-     * key是图的顶点吗
-     */
     public boolean contains(String key) {
         return st.contains(key);
     }
 
     /**
-     * key的索引
+     * vertex name -> id
      */
     public int index(String key) {
         return st.get(key);
     }
 
     /**
-     * 索引v的顶点名
+     * vertex id -> name
      */
     public String name(int v) {
         return keys[v];
     }
 
-    /**
-     * Graph对象
-     */
     public G G() {
         return graph;
     }

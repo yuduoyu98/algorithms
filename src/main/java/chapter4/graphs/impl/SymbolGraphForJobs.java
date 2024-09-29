@@ -6,16 +6,8 @@ import chapter4.graphs.api.SymbolGraph;
 import edu.princeton.cs.algs4.In;
 import org.apache.commons.lang3.tuple.Pair;
 
-/**
- *
- */
 public class SymbolGraphForJobs extends SymbolGraph<AdjListDGraph> {
 
-    /**
-     * 读入文件构造图
-     *
-     * @param filePath 文件路径
-     */
     public SymbolGraphForJobs(String filePath) {
         super(filePath, "/", true);
     }
@@ -34,15 +26,15 @@ public class SymbolGraphForJobs extends SymbolGraph<AdjListDGraph> {
                 if (!st.contains(name1)) {
                     v1 = id;
                     st.put(name1, id++);
-                } else {
-                    v1 = st.get(name1);
                 }
+                else v1 = st.get(name1);
+
                 if (!st.contains(name2)) {
                     v2 = id;
                     st.put(name2, id++);
-                } else {
-                    v2 = st.get(name2);
                 }
+                else v2 = st.get(name2);
+
                 edges.add(Pair.of(v1, v2));
             }
         }
