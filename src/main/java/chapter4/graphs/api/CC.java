@@ -1,7 +1,7 @@
 package chapter4.graphs.api;
 
 /**
- * 连通分量 API
+ * Connected Components API
  */
 public abstract class CC {
 
@@ -11,18 +11,15 @@ public abstract class CC {
         this.graph = G;
     }
 
-    /**
-     * v与w是否连通
-     */
     public abstract boolean connected(int v, int w);
 
     /**
-     * 连通分量数
+     * number of connected component
      */
     public abstract int count();
 
     /**
-     * 连通分量ID
+     * connected component id (0 to count-1)
      */
     public abstract int id(int v);
 }

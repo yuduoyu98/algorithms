@@ -11,10 +11,13 @@ import common.TestData;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 /**
- * CC API 的实现校验
+ * CC API test
  */
+@RunWith(Parameterized.class)
 public class TestCC {
 
     private TestData testData = new TestData(
@@ -24,27 +27,35 @@ public class TestCC {
             "mediumG.txt",
             "largeG.txt");
 
-    @Test
-    public void test() {
-        /**
-         * tinyG.txt 结果
-         * 连通分量个数：3
-         * 连通分量1: 6 5 4 3 2 1 0
-         * 连通分量2: 8 7
-         * 连通分量3: 12 11 10 9
-         */
-//        basicImplTest(DepthFirstPaths.class);
-        basicImplTest(DepthFirstCC.class);
+    private Class<? extends CC> implClazz;
+
+    @Parameterized.Parameters
+    public static Object[] implementations() {
+        return new Object[]{
+                DepthFirstCC.class,
+        };
     }
 
-    private <C extends CC> void basicImplTest(Class<C> implClass) {
-        StdOut.println("Test Class: " + implClass.getSimpleName());
-        testEntry(0, implClass, true);
+    public TestCC(Class<? extends CC> implClazz) {
+        this.implClazz = implClazz;
+    }
+
+    /**
+     * tinyG.txt 结果
+     * 连通分量个数：3
+     * 连通分量1: 6 5 4 3 2 1 0
+     * 连通分量2: 8 7
+     * 连通分量3: 12 11 10 9
+     */
+    @Test
+    public void CCtest() {
+        StdOut.println("Test Class: " + implClazz.getSimpleName());
+        testEntry(implClazz, true);
         StdOut.println();
     }
 
     @SuppressWarnings("unchecked")
-    private <C extends CC> void testEntry(int start, Class<C> implClass, boolean useLocal) {
+    private <C extends CC> void testEntry(Class<C> implClass, boolean useLocal) {
         In in = testData.getIn(DataSize.TINY, useLocal);
         Graph G = new AdjListUGraph(in);
         CC impl;
