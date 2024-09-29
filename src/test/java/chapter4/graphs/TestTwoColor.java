@@ -10,11 +10,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * 双色问题实现测试
+ * {@link TwoColorProblem} test
  */
 public class TestTwoColor {
 
-    //满足双色问题
+    // bipartite graph
     private TestData data1 = new TestData(
             null,
             "src/test/java/chapter4/graphs/data/",
@@ -22,7 +22,7 @@ public class TestTwoColor {
             null,
             null);
 
-    //不满足双色问题
+    // non-bipartite graph
     private TestData data2 = new TestData(
             null,
             "src/test/java/chapter4/graphs/data/",
@@ -30,9 +30,9 @@ public class TestTwoColor {
             null,
             null);
 
-    //满足双色问题
+    // bipartite
     private Graph G1;
-    //不满足双色问题
+    // non-bipartite
     private Graph G2;
 
     @Before
@@ -43,11 +43,11 @@ public class TestTwoColor {
 
     @Test
     public void twoColorTest() {
-        boolean result1 = new TwoColorProblem(G1).result();
-        assert result1 : "双色问题检测错误：满足检测为不满足";
-        StdOut.println("图1满足双色问题");
-        boolean result2 = new TwoColorProblem(G2).result();
-        assert !result2 : "双色问题检测错误：不满足检测为满足";
-        StdOut.println("图2不满足双色问题");
+        boolean result1 = new TwoColorProblem(G1).isBipartite();
+        assert result1 : "error detection G1";
+        StdOut.println("G1 is bipartite");
+        boolean result2 = new TwoColorProblem(G2).isBipartite();
+        assert !result2 : "error detection G2";
+        StdOut.println("G2 is non-bipartite");
     }
 }
