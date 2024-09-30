@@ -26,11 +26,9 @@ public class AdjListDGraph extends AbstractAdjListGraph implements DirectedGraph
     @Override
     public DirectedGraph reverse() {
         DirectedGraph diGraph = new AdjListDGraph(V);
-        for (int v = 0; v < adj.length; v++) {
-            for (int w : adj[v]) {
+        for (int v = 0; v < adj.length; v++)
+            for (int w : adj[v])
                 diGraph.addEdge(w, v);
-            }
-        }
         return diGraph;
     }
 
