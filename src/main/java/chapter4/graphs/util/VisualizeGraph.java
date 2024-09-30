@@ -2,6 +2,7 @@ package chapter4.graphs.util;
 
 import chapter4.graphs.api.ds.DirectedGraph;
 import chapter4.graphs.api.ds.Graph;
+import chapter4.graphs.impl.ds.AdjListDGraph;
 import chapter4.graphs.impl.ds.AdjListUGraph;
 import edu.princeton.cs.algs4.In;
 
@@ -99,10 +100,12 @@ public class VisualizeGraph {
 
     // test example
     public static void main(String[] args) {
-        File file = new File("C:\\Users\\Fish\\Desktop\\algorithms\\src\\test\\java\\chapter4\\graphs\\data\\tinyG.txt");
+        String filename = "tinyDG";
+        File file = new File("C:\\Users\\Fish\\Desktop\\algorithms\\src\\test\\java\\chapter4\\graphs\\data\\" + filename + ".txt");
         In in = new In(file);
-        AdjListUGraph G = new AdjListUGraph(in);
-        VisualizeGraph test = new VisualizeGraph(G, "test");
+//        Graph G = new AdjListUGraph(in);
+        Graph G = new AdjListDGraph(in);
+        VisualizeGraph test = new VisualizeGraph(G, filename);
         test.picGen();
     }
 }
