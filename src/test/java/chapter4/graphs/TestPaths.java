@@ -1,8 +1,10 @@
 package chapter4.graphs;
 
-import chapter4.graphs.api.Graph;
-import chapter4.graphs.api.Paths;
-import chapter4.graphs.impl.*;
+import chapter4.graphs.api.ds.Graph;
+import chapter4.graphs.api.task.Paths;
+import chapter4.graphs.impl.ds.AdjListUGraph;
+import chapter4.graphs.impl.task.BreadthFirstPaths;
+import chapter4.graphs.impl.task.DepthFirstPaths;
 import common.DataSize;
 import common.TestData;
 import edu.princeton.cs.algs4.In;

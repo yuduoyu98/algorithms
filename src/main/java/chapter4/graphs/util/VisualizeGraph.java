@@ -1,8 +1,8 @@
 package chapter4.graphs.util;
 
-import chapter4.graphs.api.DirectedGraph;
-import chapter4.graphs.api.Graph;
-import chapter4.graphs.impl.AdjListUGraph;
+import chapter4.graphs.api.ds.DirectedGraph;
+import chapter4.graphs.api.ds.Graph;
+import chapter4.graphs.impl.ds.AdjListUGraph;
 import edu.princeton.cs.algs4.In;
 
 import java.io.BufferedWriter;

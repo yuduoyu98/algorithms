@@ -2,10 +2,10 @@ package chapter4.graphs;
 
 import chapter1.fundamentals.api.Bag;
 import chapter1.fundamentals.impl.SimpleBag;
-import chapter4.graphs.api.CC;
-import chapter4.graphs.api.Graph;
-import chapter4.graphs.impl.AdjListUGraph;
-import chapter4.graphs.impl.DepthFirstCC;
+import chapter4.graphs.api.task.CC;
+import chapter4.graphs.api.ds.Graph;
+import chapter4.graphs.impl.ds.AdjListUGraph;
+import chapter4.graphs.impl.task.DepthFirstCC;
 import common.DataSize;
 import common.TestData;
 import edu.princeton.cs.algs4.In;

@@ -1,9 +1,9 @@
 package chapter4.graphs;
 
-import chapter4.graphs.api.Edge;
-import chapter4.graphs.api.UndirectedGraph;
-import chapter4.graphs.impl.AdjListUGraph;
-import chapter4.graphs.impl.FindBridges;
+import chapter4.graphs.api.ds.Edge;
+import chapter4.graphs.api.ds.UndirectedGraph;
+import chapter4.graphs.impl.ds.AdjListUGraph;
+import chapter4.graphs.impl.task.FindBridges;
 import common.DataSize;
 import common.TestData;
 import edu.princeton.cs.algs4.In;

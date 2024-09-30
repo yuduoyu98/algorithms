@@ -1,8 +1,8 @@
 package chapter4.graphs;
 
-import chapter4.graphs.api.Graph;
-import chapter4.graphs.impl.AdjListUGraph;
-import chapter4.graphs.impl.TwoColorProblem;
+import chapter4.graphs.api.ds.Graph;
+import chapter4.graphs.impl.ds.AdjListUGraph;
+import chapter4.graphs.impl.task.TwoColorProblem;
 import common.DataSize;
 import common.TestData;
 import edu.princeton.cs.algs4.StdOut;

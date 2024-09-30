@@ -1,8 +1,13 @@
 package chapter4.graphs;
 
-import chapter4.graphs.api.DirectedGraph;
-import chapter4.graphs.api.UndirectedGraph;
-import chapter4.graphs.impl.*;
+import chapter4.graphs.api.ds.DirectedGraph;
+import chapter4.graphs.api.ds.UndirectedGraph;
+import chapter4.graphs.impl.ds.AdjListDGraph;
+import chapter4.graphs.impl.ds.AdjListUGraph;
+import chapter4.graphs.impl.task.DirectedCycleDetect;
+import chapter4.graphs.impl.task.DirectedCycleDetect1;
+import chapter4.graphs.impl.task.UndirectedCycleDetect;
+import chapter4.graphs.impl.task.UnionFindUndirectedCycleDetect;
 import common.DataSize;
 import common.TestData;
 import edu.princeton.cs.algs4.StdOut;

@@ -1,12 +1,12 @@
 package chapter4.graphs;
 
-import chapter4.graphs.api.DirectedGraph;
-import chapter4.graphs.api.SymbolGraph;
-import chapter4.graphs.api.TopoLogical;
-import chapter4.graphs.impl.AdjListDGraph;
-import chapter4.graphs.impl.DFSTopoLogical;
-import chapter4.graphs.impl.KahnTopological;
-import chapter4.graphs.impl.SymbolGraphForJobs;
+import chapter4.graphs.api.ds.DirectedGraph;
+import chapter4.graphs.api.ds.SymbolGraph;
+import chapter4.graphs.api.task.TopoLogical;
+import chapter4.graphs.impl.ds.AdjListDGraph;
+import chapter4.graphs.impl.task.DFSTopoLogical;
+import chapter4.graphs.impl.task.KahnTopological;
+import chapter4.graphs.impl.ds.SymbolGraphForJobs;
 import edu.princeton.cs.algs4.StdOut;
 import org.junit.Before;
 import org.junit.Test;

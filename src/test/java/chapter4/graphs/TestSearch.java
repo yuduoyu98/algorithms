@@ -1,8 +1,10 @@
 package chapter4.graphs;
 
-import chapter4.graphs.api.Graph;
-import chapter4.graphs.api.Search;
-import chapter4.graphs.impl.*;
+import chapter4.graphs.api.ds.Graph;
+import chapter4.graphs.api.task.Search;
+import chapter4.graphs.impl.ds.AdjListUGraph;
+import chapter4.graphs.impl.task.DepthFirstSearch;
+import chapter4.graphs.impl.task.QuickUnionSearch;
 import common.DataSize;
 import common.TestData;
 import edu.princeton.cs.algs4.In;

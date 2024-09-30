@@ -1,7 +1,10 @@
 package chapter4.graphs;
 
-import chapter4.graphs.api.SymbolGraph;
-import chapter4.graphs.impl.*;
+import chapter4.graphs.api.ds.SymbolGraph;
+import chapter4.graphs.impl.ds.AdjListUGraph;
+import chapter4.graphs.impl.ds.SymbolGraphForMovies;
+import chapter4.graphs.impl.ds.SymbolGraphForRoutes;
+import chapter4.graphs.impl.task.DegreeOfSeparation;
 import edu.princeton.cs.algs4.StdOut;
 import org.junit.Test;
 

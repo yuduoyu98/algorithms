@@ -1,6 +1,6 @@
 package chapter4.graphs.util;
 
-import chapter4.graphs.api.Graph;
+import chapter4.graphs.api.ds.Graph;
 
 public class GraphUtils {
 
