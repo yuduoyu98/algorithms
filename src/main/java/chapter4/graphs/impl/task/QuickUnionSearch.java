@@ -1,9 +1,8 @@
 package chapter4.graphs.impl.task;
 
 import chapter1.fundamentals.impl.WeightQuickUnionUF;
-import chapter4.graphs.api.ds.Graph;
-import chapter4.graphs.api.task.Search;
 import chapter4.graphs.api.ds.UndirectedGraph;
+import chapter4.graphs.api.task.Search;
 
 /**
  * weighted quick-union to implement Search API
@@ -13,11 +12,8 @@ public class QuickUnionSearch extends Search {
 
     private WeightQuickUnionUF uf;
 
-    public QuickUnionSearch(Graph G, int s) {
+    public QuickUnionSearch(UndirectedGraph G, int s) {
         super(G, s);
-        if (!(G instanceof UndirectedGraph)) {
-            throw new IllegalArgumentException("graphs not undirected are not allowed");
-        }
         WeightQuickUnionUF uf = new WeightQuickUnionUF(G.V());
         // traverse a graph
         for (int v = 0; v < G.V(); v++)

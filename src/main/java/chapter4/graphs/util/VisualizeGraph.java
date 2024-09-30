@@ -43,7 +43,7 @@ public class VisualizeGraph {
     private void dotGen() {
         // init dot file
         StringBuilder sb = new StringBuilder();
-        String header = isDirected ? "digraph" : "strict graph" + " g {\n";
+        String header = (isDirected ? "digraph" : "strict graph") + " g {\n";
         String edgeMark = isDirected ? DIRECTED_EDGE_MARK : UNDIRECTED_EDGE_MARK;
         sb.append(header);
         // adjacent list

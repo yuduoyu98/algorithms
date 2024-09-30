@@ -1,5 +1,7 @@
 package chapter4.graphs.api.task;
 
+import chapter1.fundamentals.api.Queue;
+import chapter1.fundamentals.impl.SimpleQueue;
 import chapter4.graphs.api.ds.Graph;
 
 /**
@@ -8,12 +10,12 @@ import chapter4.graphs.api.ds.Graph;
  */
 public abstract class Search {
 
-    protected Graph graph;
+    public Graph graph;
 
     // start vertex
-    protected int start;
+    public int start;
 
-    public Search(Graph G, int s){
+    public Search(Graph G, int s) {
         this.graph = G;
         this.start = s;
     }
@@ -31,7 +33,15 @@ public abstract class Search {
     /**
      * if count equals to vertices count => the graph is connected
      */
-    public boolean connectivity(){
+    public boolean connectivity() {
         return count() == graph.V();
+    }
+
+    public Iterable<Integer> connectedVertexList() {
+        Queue<Integer> queue = new SimpleQueue<>();
+        for (int v = 0; v < graph.V(); v++) {
+            if (marked(v)) queue.enqueue(v);
+        }
+        return queue;
     }
 }
