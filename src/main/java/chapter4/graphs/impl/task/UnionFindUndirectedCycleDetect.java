@@ -2,32 +2,33 @@ package chapter4.graphs.impl.task;
 
 import chapter1.fundamentals.api.UnionFound;
 import chapter1.fundamentals.impl.WeightQuickUnionUF;
-import chapter4.graphs.api.ds.Graph;
+import chapter4.graphs.impl.ds.AdjListUGraph;
 
 /**
- * 基于union-find实现 无向图成环检测
- * 基本思路：遍历所有边 依次添加到并查集中 如果某条边的两个顶点已经属于同一个连通分量 则表示成环
+ * Undirected graph cycle detection based on union-find
+ * idea:
+ * - put each edge into the uf
+ * - if both vertices of the edge are already in a same connected component, then there is a cycle
+ * notes:
+ * - uf not suitable for directed graph
+ * - not convenient to provide the cycle path
  */
 public class UnionFindUndirectedCycleDetect {
 
     private boolean hasCycle = false;
 
-    public UnionFindUndirectedCycleDetect(Graph G) {
+    public UnionFindUndirectedCycleDetect(AdjListUGraph G) {
         UnionFound uf = new WeightQuickUnionUF(G.V());
-        for (int v = 0; v < G.V(); v++) {
-            for (int w : G.adj(v)) {
-                //先对无向图邻接表产生的边进行去重 不考虑自环
+        for (int v = 0; v < G.V(); v++)
+            for (int w : G.adj(v))
+                // deduplicate the edges of the adjacent list
                 if (v < w) {
-                    //v和w已经属于同一个连通分量 => 成环
                     if (uf.find(v) == uf.find(w)) {
                         hasCycle = true;
                         break;
-                    } else {
-                        uf.union(v, w);
                     }
+                    else uf.union(v, w);
                 }
-            }
-        }
     }
 
 
