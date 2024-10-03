@@ -2,76 +2,77 @@ package chapter4.graphs.impl.task;
 
 import chapter1.fundamentals.api.Stack;
 import chapter1.fundamentals.impl.SimpleStack;
-import chapter4.graphs.api.ds.Graph;
+import chapter4.graphs.api.ds.DirectedGraph;
+import chapter4.graphs.api.task.CycleDetect;
 
 import java.util.Arrays;
 
 /**
- * 书上方案
- * 基于DFS实现 有向图成环检测
+ * direct cycle detection based on DFS
+ *
+ * comparison with undirected graph:
+ * - no 'reversed edge'
+ * - undirected graphs are naturally strongly connected(each v and w are mutual connected)
+ *    - for undirected graphs, no matter which vertex you choose to start, you will visit the whole connected component in a single dfs
+ *    - but for directed graphs not strongly connected, this may not hold true
  */
-public class DirectedCycleDetect {
+public class DirectedCycleDetect implements CycleDetect {
 
-    private Graph graph;
-    private boolean[] marked;
-    //保存遍历经过的有向边
-    //edge[w] = v : v -> w
+    private byte[] marked;
+    private static final byte UNVISITED = 0;
+    private static final byte IMPOSSIBLE = -1; // vertices that are not possible to form a cycle
+    private static final byte VISITING = 1; // vertices that are visiting and possible to form a cycle
     private int[] edgeTo;
-    //环路
+    private DirectedGraph dg;
+    private boolean hasCycle;
     private Stack<Integer> cycle;
-    //DFS递归调用栈上的所有顶点
-    private boolean[] onStack;
 
-    public DirectedCycleDetect(Graph G) {
-        this.graph = G;
-        this.marked = new boolean[G.V()];
-        this.onStack = new boolean[G.V()];
-        this.edgeTo = new int[G.V()];
-        Arrays.fill(this.edgeTo, -1);
-        for (int v = 0; v < G.V(); v++) {
-            //对于有向图来说 循环中的一次DFS 不等于 遍历一个连通分量
-            //但如果成环 必定在一次DFS中遍历得到 不可能只遍历到环的一半
-            if (!marked[v]) {
-                dfs(v);
-                if (hasCycle()) {
-                    break;
-                }
-            }
+    public DirectedCycleDetect(DirectedGraph DG) {
+        this.dg = DG;
+        this.hasCycle = false;
+        this.marked = new byte[dg.V()];
+        this.edgeTo = new int[dg.V()];
+        Arrays.fill(marked, UNVISITED);
+        Arrays.fill(edgeTo, -1);
+        for (int v = 0; v < dg.V(); v++) {
+            // if there is a cycle, all the vertices shall be visited in a single dfs
+            dfsCycleDetect(v);
+            if (hasCycle) break;
         }
     }
 
-    /**
-     * DFS成环检测
-     */
-    private void dfs(int v) {
-        marked[v] = true;
-        onStack[v] = true;
-        for (int w : graph.adj(v)) {
-            if (hasCycle()) return;
-            else if (!marked[w]) {
+    private void dfsCycleDetect(int v) {
+        marked[v] = VISITING;
+        for (int w : dg.adj(v)) {
+            if (hasCycle) return;
+            if (marked[w] == UNVISITED) {
                 edgeTo[w] = v;
-                dfs(w);
-            } else if (onStack[w]) {
-                //成环
+                dfsCycleDetect(w);
+            }
+            else if (marked[w] == VISITING) {
+                hasCycle = true;
                 cycle = new SimpleStack<>();
-                //从w的上一个节点开始回溯 回溯到w
-                for (int x = v; x != w; x = edgeTo[x]) {
-                    cycle.push(x);
-                }
                 cycle.push(w);
-                //环路 从哪个顶点开始就要从哪个顶点结束
-                cycle.push(v);
+                for (int u = v; u != w; u = edgeTo[u])
+                    cycle.push(u);
+                return;
             }
         }
-        onStack[v] = false;
+        /**
+         * in case:
+         * A->B  A->C->B
+         * should not be detected as a cycle
+         */
+        marked[v] = IMPOSSIBLE; // if end up here, this branch of the dfs traversal tree won't form a cycle
     }
 
+    @Override
     public boolean hasCycle() {
-        return cycle != null;
+        return hasCycle;
     }
 
+    @Override
     public Iterable<Integer> cycle() {
         return cycle;
     }
-
 }
