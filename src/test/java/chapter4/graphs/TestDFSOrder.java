@@ -1,8 +1,8 @@
 package chapter4.graphs;
 
-import chapter4.graphs.api.DirectedGraph;
-import chapter4.graphs.impl.AdjListDGraph;
-import chapter4.graphs.impl.DepthFirstOrder;
+import chapter4.graphs.api.ds.DirectedGraph;
+import chapter4.graphs.impl.ds.AdjListDGraph;
+import chapter4.graphs.impl.task.DepthFirstOrder;
 import common.DataSize;
 import common.TestData;
 import edu.princeton.cs.algs4.StdOut;
