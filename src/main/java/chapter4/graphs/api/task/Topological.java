@@ -3,16 +3,16 @@ package chapter4.graphs.api.task;
 import chapter4.graphs.api.ds.DirectedGraph;
 
 /**
- * 拓扑排序 API
- * 有向无环图 DAG 才会有拓扑排序
+ * Topological API
+ * A digraph has a topological order if and only if it is a DAG
  */
-public abstract class TopoLogical {
+public abstract class Topological {
 
-    protected DirectedGraph graph;
+    protected DirectedGraph dg;
     protected Iterable<Integer> topoOrder;
 
-    public TopoLogical(DirectedGraph G){
-        graph = G;
+    public Topological(DirectedGraph DG){
+        dg = DG;
     }
 
     public boolean isDAG(){
