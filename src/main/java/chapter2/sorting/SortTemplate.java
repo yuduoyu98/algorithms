@@ -42,4 +42,11 @@ public interface SortTemplate<T extends Comparable<T>> {
         return true;
     }
 
+    default boolean isSorted(T[] arr, int start, int end) {
+        for (int i = start + 1; i < end; i++)
+            if (less(arr[i], arr[i - 1]))
+                return false;
+        return true;
+    }
+
 }

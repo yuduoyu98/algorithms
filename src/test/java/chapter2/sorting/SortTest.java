@@ -21,6 +21,7 @@ public class SortTest {
                 InsertionSort.class,
                 BubbleSort.class,
                 ShellSort.class,
+                MergeSort.class,
                 HeapSort.class,
         };
     }
