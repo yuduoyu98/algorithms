@@ -1,5 +1,6 @@
 package chapter1.fundamentals.impl;
 
+import chapter1.fundamentals.api.PrintableLinearDS;
 import chapter1.fundamentals.api.Stack;
 import edu.princeton.cs.algs4.StdOut;
 
@@ -9,7 +10,7 @@ import java.util.NoSuchElementException;
 /**
  * 基于链表实现的 Stack API （Node为静态内部类）
  */
-public class SimpleStack<Item> implements Stack<Item> {
+public class SimpleStack<Item> extends PrintableLinearDS<Item> implements Stack<Item> {
 
     private Node<Item> head;
     private int count;
