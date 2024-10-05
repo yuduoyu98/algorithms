@@ -1,9 +1,9 @@
-package chapter2.sorting.priority_queue;
+package chapter2.sorting.pq;
 
 /**
  * <h2>基于堆（大根堆）的优先队列实现</h2>
  */
-public class MaxHeapPriorityQueue<T extends Comparable<T>> extends AbstractMaxPriorityQueue<T> {
+public class MaxHeapPriorityQueue<T extends Comparable<T>> implements AbstractMaxPriorityQueue<T> {
 
     private T[] pq;     //完全二叉树的数组表示来表示堆
     private int N;

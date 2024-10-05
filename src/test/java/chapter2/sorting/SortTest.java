@@ -1,17 +1,59 @@
 package chapter2.sorting;
 
-import chapter2.sorting.impl.HeapSort;
-import chapter2.sorting.impl.InsertionSort;
-import chapter2.sorting.impl.SelectionSort;
+import chapter2.sorting.impl.*;
 import edu.princeton.cs.algs4.StdRandom;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
+import java.util.Arrays;
+
+
+@RunWith(Parameterized.class)
 public class SortTest {
 
-    private static Integer[] generateIntegerArr(int size, int bound) {
-        if (bound < size) {
-            throw new IllegalArgumentException("随机数生成上界应不小于随机数组元素个数");
+    private Class<? extends SortTemplate<Integer>> implClazz;
+
+    @Parameterized.Parameters
+    public static Object[] implementations() {
+        return new Object[]{
+                SelectionSort.class,
+                InsertionSort.class,
+                BubbleSort.class,
+                ShellSort.class,
+                HeapSort.class,
+        };
+    }
+
+    public SortTest(Class<? extends SortTemplate<Integer>> implClazz) {
+        this.implClazz = implClazz;
+    }
+
+    @Test
+    public void test() {
+        System.out.println("------------------------ test: " + implClazz.getSimpleName() + " ------------------------");
+        SortTemplate<Integer> impl = null;
+        try {
+            impl = implClazz.getConstructor().newInstance();
+        } catch (Exception e) {
+            System.out.println("sort impl build failure");
+            e.printStackTrace();
+            System.exit(0);
         }
+
+        // corner case
+        test(impl, generateIntegerArr(1, 100));
+        // test case
+        test(impl, generateIntegerArr(6, 10));
+        // regular case
+        test(impl, generateIntegerArr(50, 100));
+
+        System.out.println("test passes");
+    }
+
+    private static Integer[] generateIntegerArr(int size, int bound) {
+        if (bound < size) throw new IllegalArgumentException("upper bound less than random number size");
+
         Integer[] arr = new Integer[size];
         for (int i = 0; i < size; i++) {
             arr[i] = StdRandom.uniformInt(bound);
@@ -20,40 +62,14 @@ public class SortTest {
     }
 
     private static void test(SortTemplate<Integer> sortImpl, Integer[] arr) {
-        sortImpl.print(arr, "排序前");
+        sortImpl.print(arr, "initial");
+        Integer[] clone = arr.clone();
+        Arrays.sort(clone);
         sortImpl.sort(arr);
-        sortImpl.print(arr, "排序");
-        assert sortImpl.isSorted(arr) : "排序结果错误";
-    }
+        sortImpl.print(arr, "sorted");
 
-    private static void basicTests(SortTemplate<Integer> sortAlg){
-        //corner case
-        test(sortAlg, generateIntegerArr(1, 100));
-        //test case
-        test(sortAlg, generateIntegerArr(6, 10));
-        //regular case
-        test(sortAlg, generateIntegerArr(50, 100));
-    }
-
-    @Test
-    public void selectionSortTest() {
-        System.out.println("------------------------ 选择排序测试 ------------------------");
-        SelectionSort<Integer> sortAlg = new SelectionSort<>();
-        basicTests(sortAlg);
-    }
-
-    @Test
-    public void insertionSortTest() {
-        System.out.println("------------------------ 插入排序测试 ------------------------");
-        InsertionSort<Integer> sortAlg = new InsertionSort<>();
-        basicTests(sortAlg);
-    }
-
-    @Test
-    public void heapSortTest() {
-        System.out.println("------------------------ 堆排序测试 ------------------------");
-        HeapSort<Integer> sortAlg = new HeapSort<>();
-        basicTests(sortAlg);
+        assert sortImpl.isSorted(arr) : " incorrect implementation: array not sorted";
+        assert Arrays.equals(clone, arr) : "incorrect implementation: modified array elements";
     }
 
 }

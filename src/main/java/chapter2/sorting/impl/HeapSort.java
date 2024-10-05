@@ -1,7 +1,7 @@
 package chapter2.sorting.impl;
 
 import chapter2.sorting.SortTemplate;
-import chapter2.sorting.priority_queue.MaxHeapPriorityQueue;
+import chapter2.sorting.pq.MaxHeapPriorityQueue;
 
 public class HeapSort<T extends Comparable<T>> implements SortTemplate<T> {
 
