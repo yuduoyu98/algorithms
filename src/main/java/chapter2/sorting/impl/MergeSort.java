@@ -6,6 +6,15 @@ import chapter2.sorting.SortTemplate;
 
 /**
  * Merge Sort
+ *
+ * work summary
+ * - recursive merge sort implementations for arrays
+ *   - Top-down recursion
+ *      - self implemented {@link MergeSort#sortTD(Comparable[], int, int)} with {@link MergeSort#merge(Comparable[], int, int, int)}
+ *      - improved version {@link MergeSort#sortTD(Comparable[], Comparable[], int, int)} with {@link MergeSort#merge(Comparable[], Comparable[], int, int, int)}
+ *          - using shared space (clone[]) instead of recursively new a container queue
+ *   - Bottom-up recursion
+ *      - self implemented {@link MergeSort#sortBU(Comparable[], Comparable[])} with {@link MergeSort#merge(Comparable[], Comparable[], int, int, int)} reused
  */
 public class MergeSort<T extends Comparable<T>> implements SortTemplate<T> {
 
