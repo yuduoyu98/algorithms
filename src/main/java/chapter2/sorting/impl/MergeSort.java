@@ -7,6 +7,11 @@ import chapter2.sorting.SortTemplate;
 /**
  * Merge Sort
  *
+ * performance analysis
+ * - O(nlogn) guarantee (best/worst/avg)
+ * - stable
+ * - not in-place
+ *
  * work summary
  * - recursive merge sort implementations for arrays
  *   - Top-down recursion
