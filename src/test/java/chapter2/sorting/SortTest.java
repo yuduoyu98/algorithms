@@ -24,7 +24,7 @@ public class SortTest {
                 MergeSort.class,
                 QuickSort.class,
                 HeapSort.class,
-                QuickSort.class
+                QuickSort.class,
         };
     }
 
