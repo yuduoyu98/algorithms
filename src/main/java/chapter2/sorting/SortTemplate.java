@@ -1,7 +1,5 @@
 package chapter2.sorting;
 
-import edu.princeton.cs.algs4.StdOut;
-
 /**
  * sort implementation template
  * - using less() and exchange() to implement sort()
@@ -20,18 +18,6 @@ public interface SortTemplate<T extends Comparable<T>> {
         T t = arr[i];
         arr[i] = arr[j];
         arr[j] = t;
-    }
-
-    // print the arr
-    default void print(T[] arr) {
-        print(arr, null);
-    }
-
-    // print the arr with index
-    default void print(T[] arr, String prefix) {
-        if (prefix != null) StdOut.print(prefix + ": ");
-        for (T t : arr) StdOut.print(t + " ");
-        StdOut.println();
     }
 
     // check: ascending order

@@ -22,7 +22,9 @@ public class SortTest {
                 BubbleSort.class,
                 ShellSort.class,
                 MergeSort.class,
+                QuickSort.class,
                 HeapSort.class,
+                QuickSort.class
         };
     }
 
@@ -63,11 +65,11 @@ public class SortTest {
     }
 
     private static void test(SortTemplate<Integer> sortImpl, Integer[] arr) {
-        sortImpl.print(arr, "initial");
+        ArrayTools.print(arr, "initial");
         Integer[] clone = arr.clone();
         Arrays.sort(clone);
         sortImpl.sort(arr);
-        sortImpl.print(arr, "sorted");
+        ArrayTools.print(arr, "sorted");
 
         assert sortImpl.isSorted(arr) : " incorrect implementation: array not sorted";
         assert Arrays.equals(clone, arr) : "incorrect implementation: modified array elements";
