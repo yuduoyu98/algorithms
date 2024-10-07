@@ -1,5 +1,6 @@
 package chapter1.fundamentals.impl;
 
+import chapter1.fundamentals.api.PrintableLinearDS;
 import chapter1.fundamentals.api.Queue;
 
 import java.util.Iterator;
@@ -8,7 +9,7 @@ import java.util.NoSuchElementException;
 /**
  * 基于链表实现 Queue API
  */
-public class SimpleQueue<Item> implements Queue<Item> {
+public class SimpleQueue<Item> extends PrintableLinearDS<Item> implements Queue<Item> {
 
     private Node<Item> head;
 

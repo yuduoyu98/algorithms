@@ -2,6 +2,7 @@ package chapter1.fundamentals.impl;
 
 import chapter1.fundamentals.api.Bag;
 
+import chapter1.fundamentals.api.PrintableLinearDS;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -10,7 +11,7 @@ import java.util.NoSuchElementException;
  *
  *  @param <Item> 泛型类型
  */
-public class SimpleBag<Item> implements Bag<Item> {
+public class SimpleBag<Item> extends PrintableLinearDS<Item> implements Bag<Item> {
     private Node<Item> first;    // 链表头节点
     private int n;               // Bag元素个数
 
