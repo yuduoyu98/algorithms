@@ -1,5 +1,7 @@
 package chapter1.fundamentals.impl;
 
+import chapter1.fundamentals.api.AbstractUnionFound;
+
 /**
  * Union Found 并查集 实现
  * set数组表示触点和连通分量的关系：连通分量用其中某一个触点的id表示，下标 <=> 触点, 下标对应的值 <=> 触点所属连通分量

@@ -1,6 +1,8 @@
 package chapter1.fundamentals.impl;
 
 
+import chapter1.fundamentals.api.AbstractUnionFound;
+
 /**
  * Union Found 并查集 实现（针对union性能的优化尝试）
  * set数组和之前含义不同：下标 <=> 触点, 下标对应的值 <=> 触点相连的触点（可以是自己） 下标对应的值=下标 => 根触点

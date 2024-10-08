@@ -1,13 +1,14 @@
 package chapter1.fundamentals;
 
 import chapter1.fundamentals.impl.SimpleStack;
-import edu.princeton.cs.algs4.StdOut;
 import org.junit.Test;
 
 import java.util.Iterator;
 
+import static org.junit.Assert.assertEquals;
+
 /**
- * Stack实现测试
+ * Stack API test
  */
 public class TestStack {
 
@@ -16,10 +17,10 @@ public class TestStack {
         SimpleStack<Integer> stack = new SimpleStack<>();
         stack.push(1);
         stack.push(2);
-        StdOut.println(stack.pop());
-        StdOut.println(stack.pop());
+        assertEquals(Integer.valueOf(2), stack.pop());
+        assertEquals(Integer.valueOf(1), stack.pop());
         stack.push(3);
-        StdOut.println(stack.pop());
+        assertEquals(Integer.valueOf(3), stack.pop());
     }
 
     @Test
@@ -29,8 +30,10 @@ public class TestStack {
         stack.push(2);
         stack.push(3);
         Iterator<Integer> iter = stack.iterator();
-        while (iter.hasNext()) {
-            StdOut.println(iter.next());
-        }
+        System.out.print("iterator: ");
+        while (iter.hasNext())
+            System.out.print(iter.next() + " ");
+        System.out.println();
+        System.out.println("toString: " + stack);
     }
 }

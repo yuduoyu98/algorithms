@@ -1,15 +1,19 @@
 package chapter1.fundamentals.impl;
 
+import chapter1.fundamentals.api.AbstractUnionFound;
+
 import java.util.Arrays;
 
 /**
  * 在加权quick-union算法的基础上 考虑在执行find的时候将路径进行"压缩": 所有触点指向根节点
  */
+@SuppressWarnings("unused")
 public class PathCompressedHeightQuickUnionUF extends AbstractUnionFound {
 
     //记录树高（只对树的头节点有意义）
     private int[] ht;
 
+    @SuppressWarnings("unused")
     public PathCompressedHeightQuickUnionUF(int N) {
         super(N);
         ht = new int[N];

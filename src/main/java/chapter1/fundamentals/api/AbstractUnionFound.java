@@ -1,6 +1,4 @@
-package chapter1.fundamentals.impl;
-
-import chapter1.fundamentals.api.UnionFound;
+package chapter1.fundamentals.api;
 
 /**
  * Union Found 并查集 抽象实现

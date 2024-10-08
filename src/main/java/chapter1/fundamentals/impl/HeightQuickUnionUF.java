@@ -1,6 +1,8 @@
 package chapter1.fundamentals.impl;
 
 
+import chapter1.fundamentals.api.AbstractUnionFound;
+
 import java.util.Arrays;
 
 /**
