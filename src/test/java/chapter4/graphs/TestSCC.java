@@ -5,6 +5,7 @@ import chapter1.fundamentals.impl.SimpleQueue;
 import chapter4.graphs.api.ds.DirectedGraph;
 import chapter4.graphs.api.task.SCC;
 import chapter4.graphs.impl.ds.AdjListDGraph;
+import chapter4.graphs.impl.task.KosarajuSCC;
 import chapter4.graphs.impl.task.TarjanSCC;
 import common.DataSize;
 import common.TestData;
@@ -13,6 +14,8 @@ import edu.princeton.cs.algs4.StdOut;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * SCC API test
@@ -33,6 +36,7 @@ public class TestSCC {
     public static Object[] implementations() {
         return new Object[]{
                 TarjanSCC.class,
+                KosarajuSCC.class,
         };
     }
 
@@ -73,8 +77,8 @@ public class TestSCC {
     @Test
     @SuppressWarnings("unchecked")
     public void sccTest() {
-//        In in = testData.getIn(DataSize.TINY, true);
-        In in = testData.getIn(DataSize.MEDIUM, true);
+        DataSize dataSize = DataSize.MEDIUM;
+        In in = testData.getIn(dataSize, true);
         DirectedGraph dg = new AdjListDGraph(in);
         SCC scc = null;
         try {
@@ -94,6 +98,15 @@ public class TestSCC {
 
         for (int i = 0; i < scc.count(); i++)
             System.out.println(components[i]);
+
+        switch (dataSize) {
+            case TINY:
+                assertEquals(5, scc.count());
+                break;
+            case MEDIUM:
+                assertEquals(10, scc.count());
+                break;
+        }
 
         System.out.println();
     }
