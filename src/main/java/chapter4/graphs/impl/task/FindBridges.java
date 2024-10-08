@@ -35,7 +35,7 @@ public class FindBridges {
     UndirectedGraph ug;
     private int cnt;        // counter of the order
     private int[] order;    // order[v]  the entry order of the vertex v visited in a dfs traversal
-    private int[] low;      // low[v]  the lowest order(earliest entry time) of vertex v can reach via a back-edge from itself or its descendants
+    private int[] low;      // low[v]  the lowest order(earliest entry time) of vertex v can reach via a back-edge from itself or its descendants in a dfs traversal
 
     private static final int UNVISITED = -1;
 
