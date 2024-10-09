@@ -8,16 +8,21 @@ import chapter4.graphs.impl.ds.WeightedEdge;
  */
 public abstract class MST {
 
-    private EdgeWeightedGraph g;
+    protected EdgeWeightedGraph g;
+
+    protected double weight;
 
     public MST(EdgeWeightedGraph G){
         this.g = G;
+        this.weight = 0;
     }
 
     // all of the MST edges
     public abstract Iterable<WeightedEdge> edges();
 
     // weight of the MST
-    public abstract double weight();
+    public double weight(){
+        return weight;
+    }
 
 }

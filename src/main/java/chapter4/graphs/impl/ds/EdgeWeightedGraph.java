@@ -7,7 +7,7 @@ import edu.princeton.cs.algs4.StdRandom;
 import java.util.NoSuchElementException;
 
 /**
- *
+ * edge weighted graph
  */
 public class EdgeWeightedGraph {
 

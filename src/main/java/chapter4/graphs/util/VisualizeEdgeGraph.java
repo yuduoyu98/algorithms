@@ -1,8 +1,7 @@
 package chapter4.graphs.util;
 
-import chapter4.graphs.api.ds.DirectedGraph;
-import chapter4.graphs.api.ds.Graph;
-import chapter4.graphs.impl.ds.AdjListDGraph;
+import chapter4.graphs.impl.ds.EdgeWeightedGraph;
+import chapter4.graphs.impl.ds.WeightedEdge;
 import edu.princeton.cs.algs4.In;
 
 import java.io.BufferedWriter;
@@ -11,26 +10,27 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * use graphviz to visualize graph {@link Graph}
+ * use graphviz to visualize edge weighted graph {@link EdgeWeightedGraph}
  */
-public class VisualizeGraph {
+public class VisualizeEdgeGraph {
 
     private static final String DEFAULT_OUTPUT_DIR = "src/test/java/chapter4/graphs/graph";
     private static final String PIC_TYPE = "png";
     private static final String DIRECTED_EDGE_MARK = "->";
     private static final String UNDIRECTED_EDGE_MARK = "--";
-    private Graph G;
+    private EdgeWeightedGraph G;
     private String outDir;
     private String fileName;
-    private boolean isDirected = false;
 
-    public VisualizeGraph(Graph graph, String fileName) {
+    private static final String FALSE = "false";
+    private static final String TRUE = "true";
+
+    public VisualizeEdgeGraph(EdgeWeightedGraph graph, String fileName) {
         this(graph, DEFAULT_OUTPUT_DIR, fileName);
     }
 
-    public VisualizeGraph(Graph graph, String output, String fileName) {
+    public VisualizeEdgeGraph(EdgeWeightedGraph graph, String output, String fileName) {
         this.G = graph;
-        if (graph instanceof DirectedGraph) isDirected = true;
         this.outDir = output;
         this.fileName = fileName;
     }
@@ -42,15 +42,28 @@ public class VisualizeGraph {
     private void dotGen() {
         // init dot file
         StringBuilder sb = new StringBuilder();
-        String header = (isDirected ? "digraph" : "strict graph") + " g {\n";
-        String edgeMark = isDirected ? DIRECTED_EDGE_MARK : UNDIRECTED_EDGE_MARK;
+        String header = "strict graph" + " g {\n";
         sb.append(header);
         // adjacent list
         for (int v = 0; v < G.V(); v++)
-            for (Integer w : G.adj(v))
-                sb.append("\t").append(v).append(" ").append(edgeMark).append(" ").append(w).append(";\n");
+            for (WeightedEdge edge : G.adj(v))
+                addEdge(sb, edge);
+        addSetting(sb, "overlap", FALSE);
+        addSetting(sb, "splines", TRUE);
+        addSetting(sb, "sep", ".1");
         sb.append("}");
         dotWriter(sb.toString());
+    }
+
+    private void addEdge(StringBuilder sb, WeightedEdge edge) {
+        int v = edge.either();
+        int w = edge.other(v);
+        sb.append("\t").append(v).append(UNDIRECTED_EDGE_MARK).append(w)
+                .append("[label=\"").append(edge.weight()).append("\"]").append(";\n");
+    }
+
+    private void addSetting(StringBuilder sb, String key, String val) {
+        sb.append("\t").append(key).append("=").append(val).append(";\n");
     }
 
     /**
@@ -85,7 +98,8 @@ public class VisualizeGraph {
         // dot command
         String dotFilePath = genFilePath(true);
         String picFilePath = genFilePath(false);
-        String command = "dot " + dotFilePath + " -T" + PIC_TYPE + " -o " + picFilePath;
+        String command = "neato " + dotFilePath + " -T" + PIC_TYPE + " -o " + picFilePath;
+//        String command = "dot " + dotFilePath + " -T" + PIC_TYPE + " -o " + picFilePath;
         System.out.println("command: " + command);
         try {
             Process process = Runtime.getRuntime().exec(command);
@@ -99,12 +113,11 @@ public class VisualizeGraph {
 
     // test example
     public static void main(String[] args) {
-        String filename = "tinyDG";
+        String filename = "tinyEWG";
         File file = new File("C:\\Users\\Fish\\Desktop\\algorithms\\src\\test\\java\\chapter4\\graphs\\data\\" + filename + ".txt");
         In in = new In(file);
-//        Graph G = new AdjListUGraph(in);
-        Graph G = new AdjListDGraph(in);
-        VisualizeGraph test = new VisualizeGraph(G, filename);
+        EdgeWeightedGraph G = new EdgeWeightedGraph(in);
+        VisualizeEdgeGraph test = new VisualizeEdgeGraph(G, filename);
         test.picGen();
     }
 }

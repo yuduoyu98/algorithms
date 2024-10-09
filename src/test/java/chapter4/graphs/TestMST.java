@@ -3,6 +3,7 @@ package chapter4.graphs;
 import chapter4.graphs.api.task.MST;
 import chapter4.graphs.impl.ds.EdgeWeightedGraph;
 import chapter4.graphs.impl.ds.WeightedEdge;
+import chapter4.graphs.impl.task.PrimMST;
 import common.DataSize;
 import common.TestData;
 import edu.princeton.cs.algs4.In;
@@ -29,7 +30,7 @@ public class TestMST {
     @Parameterized.Parameters
     public static Object[] implementations() {
         return new Object[]{
-
+                PrimMST.class,
         };
     }
 
@@ -64,7 +65,7 @@ public class TestMST {
      */
     @Test
     public void test() {
-        In in = testData.getIn(DataSize.TINY, true);
+        In in = testData.getIn(DataSize.MEDIUM, true);
         EdgeWeightedGraph G = new EdgeWeightedGraph(in);
         MST impl = null;
         try {
