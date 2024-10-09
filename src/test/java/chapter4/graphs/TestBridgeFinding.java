@@ -1,6 +1,6 @@
 package chapter4.graphs;
 
-import chapter4.graphs.api.ds.Edge;
+import chapter4.graphs.impl.ds.Edge;
 import chapter4.graphs.api.ds.UndirectedGraph;
 import chapter4.graphs.impl.ds.AdjListUGraph;
 import chapter4.graphs.impl.task.FindBridges;

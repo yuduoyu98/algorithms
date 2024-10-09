@@ -2,7 +2,7 @@ package chapter4.graphs.impl.task;
 
 import chapter1.fundamentals.api.Queue;
 import chapter1.fundamentals.impl.SimpleQueue;
-import chapter4.graphs.api.ds.Edge;
+import chapter4.graphs.impl.ds.Edge;
 import chapter4.graphs.api.ds.UndirectedGraph;
 
 import java.util.Arrays;
