@@ -12,8 +12,14 @@ import java.util.Arrays;
 
 /**
  * Prim's MST Algorithms (eager version)
+ * idea:
  * - eager: delete ineligible edges from the pq immediately
  * - for each non-tree vertex w adjacent to mst, maintain only one edge on the pq
+ *
+ * performance:
+ * - time: O(ElogV)
+ *   - bottleneck: pq insert() & deleteMin()
+ * - space: O(V)
  */
 public class PrimMST extends MST {
     private IndexedMinPQ<Double> minPQ; // key: non-tree vertex; value: weight of the crossing edge

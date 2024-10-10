@@ -16,6 +16,11 @@ import chapter4.graphs.impl.ds.WeightedEdge;
  * - always taking the next minimum-weight crossing edge for the cut
  * - add V-1 edges to the tree
  *
+ * performance:
+ * - time: O(ElogE)
+ *   - bottleneck: pq insert() & deleteMin()
+ * - space: O(E)
+ *
  * implementation
  * - How do we (efficiently) find the crossing edge of minimal weight?
  *   - Priority Queue

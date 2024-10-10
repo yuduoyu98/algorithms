@@ -3,6 +3,7 @@ package chapter4.graphs;
 import chapter4.graphs.api.task.MST;
 import chapter4.graphs.impl.ds.EdgeWeightedGraph;
 import chapter4.graphs.impl.ds.WeightedEdge;
+import chapter4.graphs.impl.task.KruskalMST;
 import chapter4.graphs.impl.task.LazyPrimMST;
 import chapter4.graphs.impl.task.PrimMST;
 import common.DataSize;
@@ -33,6 +34,7 @@ public class TestMST {
         return new Object[]{
                 LazyPrimMST.class,
                 PrimMST.class,
+                KruskalMST.class,
         };
     }
 
