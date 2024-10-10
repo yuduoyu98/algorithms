@@ -16,4 +16,9 @@ public class Edge {
     public String toString() {
         return start + "->" + end;
     }
+
+    public static String toString(int precision, boolean directed, Edge edge, double weight) {
+        String edgeMark = directed ? "->" : "-";
+        return String.format("%d" + edgeMark + "%d(%." + precision + "f)", edge.start, edge.end, weight);
+    }
 }

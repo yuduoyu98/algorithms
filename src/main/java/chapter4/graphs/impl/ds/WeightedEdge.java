@@ -35,11 +35,7 @@ public class WeightedEdge extends Edge implements Comparable<WeightedEdge> {
 
     @Override
     public String toString() {
-        return toString(2);
-    }
-
-    public String toString(int precision) {
-        return String.format("%d-%d(%." + precision + "f)", start, end, weight);
+        return Edge.toString(2, false, this, weight);
     }
 
     public static void main(String[] args) {
