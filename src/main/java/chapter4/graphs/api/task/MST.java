@@ -10,19 +10,14 @@ public abstract class MST {
 
     protected EdgeWeightedGraph g;
 
-    protected double weight;
-
     public MST(EdgeWeightedGraph G){
         this.g = G;
-        this.weight = 0;
     }
 
     // all of the MST edges
     public abstract Iterable<WeightedEdge> edges();
 
     // weight of the MST
-    public double weight(){
-        return weight;
-    }
+    public abstract double weight();
 
 }

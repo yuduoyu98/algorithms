@@ -3,6 +3,7 @@ package chapter4.graphs;
 import chapter4.graphs.api.task.MST;
 import chapter4.graphs.impl.ds.EdgeWeightedGraph;
 import chapter4.graphs.impl.ds.WeightedEdge;
+import chapter4.graphs.impl.task.LazyPrimMST;
 import chapter4.graphs.impl.task.PrimMST;
 import common.DataSize;
 import common.TestData;
@@ -30,6 +31,7 @@ public class TestMST {
     @Parameterized.Parameters
     public static Object[] implementations() {
         return new Object[]{
+                LazyPrimMST.class,
                 PrimMST.class,
         };
     }
@@ -65,7 +67,7 @@ public class TestMST {
      */
     @Test
     public void test() {
-        In in = testData.getIn(DataSize.MEDIUM, true);
+        In in = testData.getIn(DataSize.TINY, true);
         EdgeWeightedGraph G = new EdgeWeightedGraph(in);
         MST impl = null;
         try {
@@ -79,7 +81,7 @@ public class TestMST {
 
         for (WeightedEdge e : impl.edges())
             System.out.println(e);
-        System.out.println("MST weight:" + impl.weight());
+        System.out.printf("MST weight: %.5f%n", impl.weight());
 
         StdOut.println();
     }
