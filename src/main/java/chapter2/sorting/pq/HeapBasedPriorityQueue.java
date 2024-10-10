@@ -8,9 +8,11 @@ package chapter2.sorting.pq;
  */
 public abstract class HeapBasedPriorityQueue<T extends Comparable<T>> implements PriorityQueue<T> {
 
-    protected T[] pq;     // array representation of a heap-ordered complete binary tree
+    // array representation of a heap-ordered complete binary tree
     // pq[0] unused; pq[k]'s children pq[2k] & pq[2k+1]
     // a tree of size N needs an array with size N+1
+    protected T[] pq;
+
     protected int N;      // tree size
     protected static final int DEFAULT_INIT_SIZE = 10;
     protected static final int ROOT_OFFSET = 1;    // offset (pq[0] unused)

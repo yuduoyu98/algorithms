@@ -3,23 +3,23 @@ package chapter2.sorting.pq;
 import java.util.NoSuchElementException;
 
 /**
- * min priority queue implemented by binary heap
+ * max priority queue implemented by binary heap
  * - heap-ordered binary tree: parent's key no larger/smaller than children's keys
  */
-public class HeapBasedMinPriorityQueue<T extends Comparable<T>> extends HeapBasedPriorityQueue<T> implements MinPriorityQueue<T> {
-    private static final boolean FLAG = false;
+public class MaxPriorityQueueImpl<T extends Comparable<T>> extends HeapBasedPriorityQueue<T> implements MaxPriorityQueue<T> {
+    private static final boolean FLAG = true;
 
     @SuppressWarnings("unused")
-    public HeapBasedMinPriorityQueue() {
+    public MaxPriorityQueueImpl() {
         super();
     }
 
     @SuppressWarnings("unused")
-    public HeapBasedMinPriorityQueue(int capacity) {
+    public MaxPriorityQueueImpl(int capacity) {
         super(capacity);
     }
 
-    public HeapBasedMinPriorityQueue(T[] arr) {
+    public MaxPriorityQueueImpl(T[] arr) {
         super(arr);
     }
 
@@ -30,18 +30,19 @@ public class HeapBasedMinPriorityQueue<T extends Comparable<T>> extends HeapBase
     }
 
     @Override
-    public T min() {
+    public T max() {
         return isEmpty() ? null : pq[ROOT_OFFSET];
     }
 
     @Override
-    public T deleteMin() {
-        if (isEmpty()) throw new NoSuchElementException("deleteMin from an empty min priority queue");
+    public T deleteMax() {
+        if (isEmpty()) throw new NoSuchElementException("deleteMax from an empty max priority queue");
 
-        T min = pq[ROOT_OFFSET];
+        T max = pq[ROOT_OFFSET];
         pq[ROOT_OFFSET] = pq[N];
         pq[N--] = null;
         sink(FLAG);
-        return min;
+        return max;
     }
+
 }
