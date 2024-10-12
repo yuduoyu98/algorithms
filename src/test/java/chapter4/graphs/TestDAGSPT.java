@@ -3,8 +3,8 @@ package chapter4.graphs;
 import chapter4.graphs.api.task.SPT;
 import chapter4.graphs.impl.ds.EdgeWeightedDiGraph;
 import chapter4.graphs.impl.ds.WeightedDiEdge;
+import chapter4.graphs.impl.task.DAGLPT;
 import chapter4.graphs.impl.task.DAGSPT;
-import chapter4.graphs.impl.task.DijkstraSPT;
 import common.DataSize;
 import common.TestData;
 import edu.princeton.cs.algs4.In;
@@ -32,6 +32,7 @@ public class TestDAGSPT {
     public static Object[] implementations() {
         return new Object[]{
                 DAGSPT.class,
+                DAGLPT.class,
         };
     }
 
@@ -42,6 +43,7 @@ public class TestDAGSPT {
 
     /**
      * tinyEWGAG.txt 5
+     * shortest path
      * 5 to 0 (0.73)  5->4  0.35   4->0  0.38
      * 5 to 1 (0.32)  5->1  0.32
      * 5 to 2 (0.62)  5->7  0.28   7->2  0.34
@@ -50,6 +52,16 @@ public class TestDAGSPT {
      * 5 to 5 (0.00)
      * 5 to 6 (1.13)  5->1  0.32   1->3  0.29   3->6  0.52
      * 5 to 7 (0.28)  5->7  0.28
+     *
+     * longest path
+     * 5 to 0 (2.44)  5->1  0.32   1->3  0.29   3->6  0.52   6->4  0.93   4->0  0.38
+     * 5 to 1 (0.32)  5->1  0.32
+     * 5 to 2 (2.77)  5->1  0.32   1->3  0.29   3->6  0.52   6->4  0.93   4->7  0.37   7->2  0.34
+     * 5 to 3 (0.61)  5->1  0.32   1->3  0.29
+     * 5 to 4 (2.06)  5->1  0.32   1->3  0.29   3->6  0.52   6->4  0.93
+     * 5 to 5 (0.00)
+     * 5 to 6 (1.13)  5->1  0.32   1->3  0.29   3->6  0.52
+     * 5 to 7 (2.43)  5->1  0.32   1->3  0.29   3->6  0.52   6->4  0.93   4->7  0.37
      */
     @Test
     public void test() {
