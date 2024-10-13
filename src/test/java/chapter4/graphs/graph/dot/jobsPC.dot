@@ -1,0 +1,16 @@
+digraph g {
+	9->4[label="29.0"];
+	9->6[label="29.0"];
+	8->2[label="32.0"];
+	7->3[label="32.0"];
+	7->8[label="32.0"];
+	6->3[label="21.0"];
+	6->8[label="21.0"];
+	1->2[label="51.0"];
+	0->1[label="41.0"];
+	0->7[label="41.0"];
+	0->9[label="41.0"];
+	overlap=false;
+	splines=true;
+	sep=.1;
+}
