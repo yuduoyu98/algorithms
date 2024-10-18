@@ -1,6 +1,7 @@
 package chapter4.graphs.impl.task;
 
 import chapter1.fundamentals.api.Queue;
+import chapter1.fundamentals.api.Stack;
 import chapter1.fundamentals.impl.SimpleQueue;
 import chapter1.fundamentals.impl.SimpleStack;
 import chapter4.graphs.api.task.GeneralSPT;
@@ -29,14 +30,14 @@ public class SPFA extends GeneralSPT {
     private Queue<Integer> changedV;
     private boolean[] onQ; // whether vertex is on changedV -> reduce relax operations
     private boolean hasNegativeCycle;
-    private Queue<WeightedDiEdge> negativeCycle;
+    private Stack<WeightedDiEdge> negativeCycle;
 
     public SPFA(EdgeWeightedDiGraph G, int s) {
         super(G, s);
         changedV = new SimpleQueue<>();
         onQ = new boolean[g.V()];
         hasNegativeCycle = false;
-        negativeCycle = new SimpleQueue<>();
+        negativeCycle = new SimpleStack<>();
         // relax count of the vertex
         int[] relaxCount = new int[g.V()];
         Arrays.fill(distTo, Double.POSITIVE_INFINITY);
@@ -65,7 +66,7 @@ public class SPFA extends GeneralSPT {
             stack.push(u);
         int k = u;
         do {
-            negativeCycle.enqueue(edgeTo[k]);
+            negativeCycle.push(edgeTo[k]);
             k = edgeTo[k].from();
         } while (k != u);
     }

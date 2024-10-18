@@ -1,0 +1,25 @@
+digraph g {
+	CAD->USD[label="0.0050"];
+	CAD->EUR[label="0.3120"];
+	CAD->GBP[label="0.4308"];
+	CAD->CHF[label="-0.0478"];
+	CHF->USD[label="0.0598"];
+	CHF->EUR[label="0.3595"];
+	CHF->GBP[label="0.4797"];
+	CHF->CAD[label="0.0481"];
+	GBP->USD[label="-0.4194"];
+	GBP->EUR[label="-0.1187"];
+	GBP->CHF[label="-0.4787"];
+	GBP->CAD[label="-0.4305"];
+	EUR->USD[label="-0.2994"];
+	EUR->GBP[label="0.1188"];
+	EUR->CHF[label="-0.3598"];
+	EUR->CAD[label="-0.3119"];
+	USD->EUR[label="0.2998"];
+	USD->GBP[label="0.4201"];
+	USD->CHF[label="-0.0592"];
+	USD->CAD[label="-0.0050"];
+	overlap=false;
+	splines=true;
+	sep=.1;
+}

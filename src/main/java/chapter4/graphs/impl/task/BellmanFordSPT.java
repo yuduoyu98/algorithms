@@ -1,7 +1,6 @@
 package chapter4.graphs.impl.task;
 
-import chapter1.fundamentals.api.Queue;
-import chapter1.fundamentals.impl.SimpleQueue;
+import chapter1.fundamentals.api.Stack;
 import chapter1.fundamentals.impl.SimpleStack;
 import chapter4.graphs.api.task.GeneralSPT;
 import chapter4.graphs.impl.ds.EdgeWeightedDiGraph;
@@ -47,14 +46,14 @@ public class BellmanFordSPT extends GeneralSPT {
 
     private boolean relaxHappen; // whether the edge relaxation actually take effect in an iteration
     private boolean hasNegativeCycle;
-    private Queue<WeightedDiEdge> negativeCycle;
+    private Stack<WeightedDiEdge> negativeCycle;
 
     public BellmanFordSPT(EdgeWeightedDiGraph G, int s) {
         super(G, s);
         Arrays.fill(distTo, Double.POSITIVE_INFINITY);
         distTo[start] = 0.0;
         hasNegativeCycle = false;
-        negativeCycle = new SimpleQueue<>();
+        negativeCycle = new SimpleStack<>();
 
         // V-1 iteration (at most)
         int i = 0;
@@ -98,7 +97,7 @@ public class BellmanFordSPT extends GeneralSPT {
             stack.push(u);
         int k = u;
         do {
-            negativeCycle.enqueue(edgeTo[k]);
+            negativeCycle.push(edgeTo[k]);
             k = edgeTo[k].from();
         } while (k != u);
     }

@@ -26,6 +26,7 @@ public class VisualizeEdgeGraph {
     private String outDir;
     private String fileName;
     private boolean isDirected;
+    private String[] names;
 
     private static final String FALSE = "false";
     private static final String TRUE = "true";
@@ -50,27 +51,34 @@ public class VisualizeEdgeGraph {
 
     @SuppressWarnings("unused")
     public VisualizeEdgeGraph(EdgeWeightedGraph graph, String fileName) {
-        this(graph, DEFAULT_OUTPUT_DIR, fileName);
+        this(graph, DEFAULT_OUTPUT_DIR, null, fileName);
     }
 
-    public VisualizeEdgeGraph(EdgeWeightedGraph graph, String output, String fileName) {
+    public VisualizeEdgeGraph(EdgeWeightedGraph graph, String output, String[] names, String fileName) {
         this.outDir = output;
         this.fileName = fileName;
         this.edges = new SimpleQueue<>();
         this.isDirected = false;
+        this.names = names;
         for (WeightedEdge edge : graph.edges())
             edges.enqueue(new Edge(edge));
     }
 
     public VisualizeEdgeGraph(EdgeWeightedDiGraph graph, String fileName) {
-        this(graph, DEFAULT_OUTPUT_DIR, fileName);
+        this(graph, DEFAULT_OUTPUT_DIR, null, fileName);
     }
 
-    public VisualizeEdgeGraph(EdgeWeightedDiGraph graph, String output, String fileName) {
+    @SuppressWarnings("unused")
+    public VisualizeEdgeGraph(EdgeWeightedDiGraph graph, String[] names, String fileName) {
+        this(graph, DEFAULT_OUTPUT_DIR, names, fileName);
+    }
+
+    public VisualizeEdgeGraph(EdgeWeightedDiGraph graph, String output, String[] names, String fileName) {
         this.outDir = output;
         this.fileName = fileName;
         this.edges = new SimpleQueue<>();
         this.isDirected = true;
+        this.names = names;
         for (WeightedDiEdge edge : graph.edges())
             edges.enqueue(new Edge(edge));
     }
@@ -87,9 +95,9 @@ public class VisualizeEdgeGraph {
 
         sb.append(header);
         // adjacent list
-        for (Edge edge : edges) {
-            addEdge(sb, edge);
-        }
+        for (Edge edge : edges)
+            if (edge.x != edge.y)  // ignore self-loop
+                addEdge(sb, edge);
 
         addSetting(sb, "overlap", FALSE);
         addSetting(sb, "splines", TRUE);
@@ -100,8 +108,16 @@ public class VisualizeEdgeGraph {
 
     private void addEdge(StringBuilder sb, Edge edge) {
         String edgeMark = isDirected ? DIRECTED_EDGE_MARK : UNDIRECTED_EDGE_MARK;
-        sb.append("\t").append(edge.x).append(edgeMark).append(edge.y)
-                .append("[label=\"").append(edge.weight).append("\"]").append(";\n");
+        sb.append("\t");
+        if (names != null) {
+            sb.append(names[edge.x]).append(edgeMark).append(names[edge.y]);
+        }
+        else sb.append(edge.x).append(edgeMark).append(edge.y);
+        sb.append("[label=\"")
+                .append(String.format("%.4f", edge.weight)) // keep 3 digit after .
+//                .append(edge.weight)
+                .append("\"]").append(";\n");
+
     }
 
     private void addSetting(StringBuilder sb, String key, String val) {
