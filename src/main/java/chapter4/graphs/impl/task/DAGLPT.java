@@ -17,29 +17,26 @@ import java.util.Arrays;
  */
 public class DAGLPT extends SPT {
 
-    private double[] distTo;
-    private WeightedDiEdge[] edgeTo;
     private boolean[] marked;
     Stack<Integer> reversePost;
 
     public DAGLPT(EdgeWeightedDiGraph G, int s) {
         super(G, s);
-        this.distTo = new double[g.V()];
         this.marked = new boolean[g.V()];
-        this.edgeTo = new WeightedDiEdge[g.V()];
         Arrays.fill(distTo, Double.NEGATIVE_INFINITY); // initial update when there is a path
         distTo[start] = 0.0;
         reversePost = new SimpleStack<>();
 
         dfs(start);
         for (int v : reversePost)
-            relax(v);
+            VRelax(v);
     }
 
     /**
      * vertex relaxation
      */
-    private void relax(int v) {
+    @Override
+    protected void VRelax(int v) {
         for (WeightedDiEdge e : g.adj(v)) {
             // relax each edge v->w
             int w = e.to();
@@ -57,23 +54,6 @@ public class DAGLPT extends SPT {
             if (!marked[w]) dfs(w);
         }
         reversePost.push(v);
-    }
-
-    public double distTo(int v) {
-        return distTo[v];
-    }
-
-    public boolean hasPathTo(int v) {
-        return distTo[v] != Double.POSITIVE_INFINITY;
-    }
-
-    public Iterable<WeightedDiEdge> pathTo(int v) {
-        if (!hasPathTo(v)) return null;
-        Stack<WeightedDiEdge> edgesTo = new SimpleStack<>();
-        for (; v != start; v = edgeTo[v].from()) {
-            edgesTo.push(edgeTo[v]);
-        }
-        return edgesTo;
     }
 
 }

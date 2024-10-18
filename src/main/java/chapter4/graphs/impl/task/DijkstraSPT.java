@@ -1,7 +1,5 @@
 package chapter4.graphs.impl.task;
 
-import chapter1.fundamentals.api.Stack;
-import chapter1.fundamentals.impl.SimpleStack;
 import chapter2.sorting.pq.IndexedMinPQ;
 import chapter2.sorting.pq.IndexedMinPQImpl;
 import chapter4.graphs.api.task.SPT;
@@ -14,7 +12,8 @@ import java.util.Arrays;
  * Dijkstra’s algorithm solves
  * - single-source shortest-paths problem
  * - edge-weighted digraphs
- * - non-negative weights
+ * - non-negative weight edges
+ *
  * idea
  * - edge relaxation
  *   - for directed edge v->w:
@@ -24,28 +23,26 @@ import java.util.Arrays;
  *   - assume that an unreached vertex w, w->v is shorter
  *   => dist[w] + e.weight < dist[v] => dist[w] <= dist[v] => w should be deleted from PQ earlier than v (contradiction)
  *
+ * thinking
+ * - why dijkstra does not suitable for negative weight edges?
+ *   - dijkstra
+ *
  * performance
  * - time: O(ElogV)
  */
 public class DijkstraSPT extends SPT {
-
-    private WeightedDiEdge[] edgeTo;
-    private double[] distTo;
     private IndexedMinPQ<Double> minPQ;  // unreached vertex -> shortest dist
-    private static final double UNREACHABLE = Double.POSITIVE_INFINITY;
 
     public DijkstraSPT(EdgeWeightedDiGraph G, int s) {
         super(G, s);
-        this.edgeTo = new WeightedDiEdge[g.V()];
-        this.distTo = new double[g.V()];
-        Arrays.fill(distTo, UNREACHABLE);
+        Arrays.fill(distTo, Double.POSITIVE_INFINITY);
         distTo[start] = 0.0;
         this.minPQ = new IndexedMinPQImpl<>(g.V());
 
         int v = start;
         do {
             for (WeightedDiEdge e : g.adj(v))
-                relax(e);
+                ERelex(e);
             v = minPQ.delMin();
         } while (!minPQ.isEmpty());
     }
@@ -62,46 +59,11 @@ public class DijkstraSPT extends SPT {
      * - otherwise
      *   - do nothing
      */
-    private void relax(WeightedDiEdge edge) {
-        int v = edge.from(), w = edge.to();
-        if (distTo[w] <= distTo[v] + edge.weight()) return;
-        distTo[w] = distTo[v] + edge.weight();
-        edgeTo[w] = edge;
+    @Override
+    protected void actionsAfterERelax(WeightedDiEdge e) {
+        int w = e.to();
         if (minPQ.contains(w)) minPQ.change(w, distTo[w]);
         else minPQ.insert(w, distTo[w]);
-    }
-
-    @Override
-    public double distTo(int v) {
-        validateVertex(v);
-        return distTo[v];
-    }
-
-    @Override
-    public boolean hasPathTo(int v) {
-        validateVertex(v);
-        return distTo[v] != UNREACHABLE;
-    }
-
-    @Override
-    public Iterable<WeightedDiEdge> pathTo(int v) {
-        validateVertex(v);
-        if (!hasPathTo(v)) return null;
-        Stack<WeightedDiEdge> path = new SimpleStack<>();
-        int u = v;
-        while (u != start) {
-            WeightedDiEdge edge = edgeTo[u];
-            path.push(edge);
-            u = edge.from();
-        }
-        return path;
-    }
-
-    // throw an IllegalArgumentException unless {@code 0 <= v < V}
-    private void validateVertex(int v) {
-        int V = distTo.length;
-        if (v < 0 || v >= V)
-            throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (V - 1));
     }
 
     // check optimality conditions:

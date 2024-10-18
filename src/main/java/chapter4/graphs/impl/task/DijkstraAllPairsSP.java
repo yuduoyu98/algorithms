@@ -11,13 +11,13 @@ import chapter4.graphs.impl.ds.WeightedDiEdge;
 public class DijkstraAllPairsSP {
     private DijkstraSPT[] source;
 
-    DijkstraAllPairsSP(EdgeWeightedDiGraph G) {
+    public DijkstraAllPairsSP(EdgeWeightedDiGraph G) {
         source = new DijkstraSPT[G.V()];
         for (int v = 0; v < G.V(); v++)
             source[v] = new DijkstraSPT(G, v);
     }
 
-    public Iterable<WeightedDiEdge> path(int s, int t) {return source[s].pathTo(t);}
+    public Iterable<WeightedDiEdge> path(int s, int t) {return source[s].SPto(t);}
 
     public double dist(int s, int t) {return source[s].distTo(t);}
 

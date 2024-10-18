@@ -81,8 +81,8 @@ public class TestDAGSPT {
         for (int terminal = 0; terminal < G.V(); terminal++) {
             StdOut.print(start + " to " + terminal);
             StdOut.printf(" (%4.2f): ", impl.distTo(terminal));
-            if (impl.hasPathTo(terminal))
-                for (WeightedDiEdge e : impl.pathTo(terminal))
+            if (impl.hasSP(terminal))
+                for (WeightedDiEdge e : impl.SPto(terminal))
                     StdOut.print(e + " ");
             StdOut.println();
         }
