@@ -3,14 +3,14 @@
 
 :star:《算法（第4版）》的个人学习笔记和部分练习记录 :star:
 
-## 进度
-### Chapter 1: Fundamentals 
+## 进度dagou
+### Chapter 1: Fundamentals ✔
 
-### Chapter 2: Sorting 
+### Chapter 2: Sorting ✔ 
 
-### Chapter 3: Searching 
+### Chapter 3: Searching ✔ 
 
-### Chapter 4: Graphs  
+### Chapter 4: Graphs ✔
 
 ### Chapter 5: Strings  
 
